@@ -56,6 +56,7 @@ git checkout -b `your-branch-name`
 ### Make commits to your feature branch.
 
 Prefix each commit like so
+
   - [feat] Add a new feature
   - [fix] Fix inconsistent tests [Fixes #0]
   - [refactor] ...
@@ -89,8 +90,9 @@ changes to the master branch into yours by running this command
 from your branch:
 
 ```bash
+
 git pull --rebase upstream dev
-```
+
 
 This will start the rebase process. You must commit all of your changes
 before doing this. If there are no conflicts, this should just roll all
