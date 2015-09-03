@@ -56,12 +56,14 @@ git checkout -b `your-branch-name`
 ### Make commits to your feature branch.
 
 Prefix each commit like so
-  - (feat) Added a new feature
-  - (fix) Fixed inconsistent tests [Fixes #0]
-  - (refactor) ...
-  - (cleanup) ...
-  - (test) ...
-  - (doc) ...
+  - [feat] Add a new feature
+  - [fix] Fix inconsistent tests [Fixes #0]
+  - [refactor] ...
+  - [cleanup] ...
+  - [test] ...
+  - [doc] ...
+
+In the Commit Message Body place the link to the trello card. Separated from the Subject line by a blank space.
 
 Make changes and commits on your branch, and make sure that you
 only make changes that are relevant to this branch. If you find
@@ -87,7 +89,7 @@ changes to the master branch into yours by running this command
 from your branch:
 
 ```bash
-git pull --rebase upstream master
+git pull --rebase upstream dev
 ```
 
 This will start the rebase process. You must commit all of your changes
