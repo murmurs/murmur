@@ -90,9 +90,14 @@ changes to the master branch into yours by running this command
 from your branch:
 
 ```bash
+<<<<<<< HEAD
 
 git pull --rebase upstream dev
 
+=======
+git pull --rebase upstream dev
+```
+>>>>>>> [doc] Edit contributing guidelines
 
 This will start the rebase process. You must commit all of your changes
 before doing this. If there are no conflicts, this should just roll all
