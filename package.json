@@ -1,10 +1,13 @@
 {
-  "name": "Murmur submitMessage",
+  "name": "Murmur",
+  "description": "Our Murmur App Node dependencies",
   "version": "1.0.0",
   "dependencies": {
-    "express": "4.13.3"
   },
   "devDependencies": {
-    "mocha": "2.3.0"
+    "mocha": "2.3.0",
+    "firebase": "2.2.9",
+    "chai": "3.2.0",
+    "express": "4.13.3"
   }
 }
