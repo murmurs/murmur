@@ -16,6 +16,22 @@ exports.insertPost = function(request){
   });
 }
 
+exports.votePost = function(request){
+  var messageId = request.messageId;
+  var voteRequest = request.vote; //Still waiting for what will the voting be.
+  
+  var vote = freshPost.child(messageId + '/votes');
+  
+  vote.transaction(function (value){ //Will still change depending on what will the voting be
+    if (voteRequest === true){       //But this will work. It will increment the number of votes.
+      return value + 1;              //Doesn't have authentication yet
+    }
+    else {
+      return value - 1;
+    }
+  });
+}
+
 exports.comment = function(request){
   var messageId = request.messageId;      //The post/message ID where the comment resides
   var commentMessage = request.comment;
@@ -28,6 +44,7 @@ exports.comment = function(request){
   comment.set({                   //Pushes the comment data into the post/message
     commentId : commentId,
     comment : commentMessage,
+    timestamp : Firebase.ServerValue.TIMESTAMP,
     votes : 0,
   })
 }
