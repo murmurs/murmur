@@ -1,6 +1,6 @@
 var express = require('express');
 var firebase = require('./firebase');
-var bodyParser = require('bodyParser');
+var bodyParser = require('body-parser');
 var sessions = require('express-session');
 var Promise = require('bluebird');
 var validator = Promise.promisifyAll(require('validator'));
@@ -10,22 +10,23 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('./public'));
 
-app.get('/', function(request, response){
-  response.send(200);
-})
 
-app.post('/', function(request,response){ //request.body.url = 'newPost'
+// app.post('/', function(request,response){ //request.body.url = 'newPost'
+app.post('/user', function(request,response){ //request.body.url = 'newPost'
   //validate the request body for any XSS attacks
-  validator.escape.(request.body).then(function(requestBody){
+  console.log('consoling in post request')
+  validator.escape(request.body).then(function(requestBody){
   	firebase.insertPost(requestBody);
   }).then(function(data){
-  	response.send(201, data);
+  	response.writeHead(201)
+  	response.end();
   }).catch(function(err){
   	console.error(err);
-  	response.send(404);
+  	response.sendStatus(404);
   })
 })
+
 
 app.listen(8080);
