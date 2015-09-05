@@ -48,3 +48,20 @@ exports.comment = function(request){
     votes : 0,
   })
 }
+
+exports.voteComment = function(request){
+  var messageId = request.messageId
+  var commentId = request.commentId;
+  var voteRequest = request.vote; //Still waiting for what will the voting be.
+  
+  var vote = freshPost.child(messageId + '/Comments/' + commentId + '/votes');
+  
+  vote.transaction(function (value){ //Will still change depending on what will the voting be
+    if (voteRequest === true){       //But this will work. It will increment the number of votes.
+      return value + 1;              //Doesn't have authentication yet
+    }
+    else {
+      return value - 1;
+    }
+  });
+}
