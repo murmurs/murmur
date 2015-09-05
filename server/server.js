@@ -1,28 +1,32 @@
 var express = require('express');
 var firebase = require('./firebase');
-var app = express();
 var bodyParser = require('body-parser');
+var sessions = require('express-session');
+var Promise = require('bluebird');
+var validator = Promise.promisifyAll(require('validator'));
 
-app.use(express.static('../client'));
+var app = express();
+//middle-ware to parse the body of each request to our server
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.get('/', function(request, response){
-  response.send(200);
+app.use(express.static('./public'));
+
+
+// app.post('/', function(request,response){ //request.body.url = 'newPost'
+app.post('/user', function(request,response){ //request.body.url = 'newPost'
+  //validate the request body for any XSS attacks
+  console.log('consoling in post request')
+  validator.escape(request.body).then(function(requestBody){
+  	firebase.insertPost(requestBody);
+  }).then(function(data){
+  	response.writeHead(201)
+  	response.end();
+  }).catch(function(err){
+  	console.error(err);
+  	response.sendStatus(404);
+  })
 })
 
-app.post('/', function(request,response){ //request.body.url = 'newPost'
-  firebase.insertPost(request.body);
-  response.send(201);
-})
-
-app.post('/comment', function(request,response){ //request.body.url = 'newPost'
-  firebase.comment(request.body);
-  response.send(201);
-})
-
-app.post('/vote', function(request,response){ //request.body.url = 'newPost'
-  firebase.votePost(request.body);
-  response.send(201);
-})
 
 app.listen(8080);
