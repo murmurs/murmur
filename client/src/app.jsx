@@ -1,5 +1,5 @@
 var React = require('react');
-var InputBox = require('./inputbox');
+var TopBar = require('./topbar');
 
-var element = React.createElement(InputBox);
+var element = React.createElement(TopBar);
 React.render(element, document.querySelector('.container'));
