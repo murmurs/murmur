@@ -1,10 +1,10 @@
-# Initial setup
+#  Client Side Initial setup
 <!-- install this so you can run gulp in terminal -->
 npm install -g gulp-cli
 <!-- create package.json -->
 npm init
-<!-- install all dependencies -->
-npm install --save gulp gulp-react gulp-concat browserify reactify vinyl-source-stream watchify gulp-util gulp-server-livereload node-notifier
+<!-- install all dependencies in client/-->
+npm install --save gulp gulp-react gulp-concat browserify reactify vinyl-source-stream watchify gulp-util gulp-server-livereload node-notifier react-router jquery
 
 # Create gulpfile.js
 <!--
