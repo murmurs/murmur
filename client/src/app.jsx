@@ -1,8 +1,11 @@
 var React = require('react');
-var ViewAllMessage = require('./viewAllMessage');
+var ViewAllMessages = require('./viewAllMessages');
+var TopBar = require('./topbar');
+var NewOrHot = require('./neworhot');
+var PostMessage = require('./postmessage');
 
 
-var ViewAllFreshMessages = React.createClass({
+var mainView = React.createClass({
 
   messages: [],
   getInitialState: function(){
@@ -21,11 +24,26 @@ var ViewAllFreshMessages = React.createClass({
   },
   render: function(){
     return (
-      <ViewAllMessage messages={ this.state.messages }/>
+      <div>
+        <TopBar/>
+        <div>
+          <div style={this.styles.sortSelectors}>
+            <NewOrHot/>
+            <PostMessage/>
+          </div>
+          <ViewAllMessages messages={ this.state.messages }/>
+        </div>
+      </div>
+
     )
   },
+  styles: {
+    sortSelectors: {
+      paddingTop: '80px',
+    },
+  }
 })
 
 
-var element = React.createElement(ViewAllFreshMessages);
+var element = React.createElement(mainView);
 React.render(element, document.querySelector('.container'));

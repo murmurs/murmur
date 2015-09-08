@@ -1,12 +1,9 @@
 var React = require('react');
-var TopBar = require('./topbar');
-var PostMessage = require('./postmessage');
-var NewOrHot = require('./neworhot');
 var Message = require('./message');
 
 require("./viewAllMessage.css");
 
-var ViewAllMessage = React.createClass({
+var ViewAllMessages = React.createClass({
   render: function() {
     var messagesObject = this.props.messages;
     var messageRows = [];
@@ -21,28 +18,16 @@ var ViewAllMessage = React.createClass({
       )
     }
     return (
-      <div>
-        <TopBar/>
-        <div>
-          <div style={this.styles.newOrHot}>
-            <NewOrHot/>
-            <PostMessage/>
-          </div>
           <div style={this.styles.messageRows}>
             { messageRows }
           </div>
-        </div>
-      </div>
     )
   },
   styles: {
     messageRows: {
       padding: '60px',
     },
-    newOrHot: {
-      paddingTop: '80px',
-    },
   },
 });
 
-module.exports = ViewAllMessage;
+module.exports = ViewAllMessages;
