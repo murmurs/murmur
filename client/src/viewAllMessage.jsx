@@ -8,20 +8,41 @@ require("./viewAllMessage.css");
 
 var ViewAllMessage = React.createClass({
   render: function() {
+    var messagesObject = this.props;
+    var messageRows = [];
+    for(key in messagesObject){
+      var message = messagesObject[key];
+      messageRows.push(
+        <Message
+          message={ message.message }
+          comments={ message.comments }
+          votes={ message.votes }
+          timestamp={ message.timestamp }/>
+      )
+    }
     return (
       <div>
         <TopBar/>
-        <div className="ViewAllMessage__content" style={{paddingTop: "80px"}}>
-          <div>
+        <div>
+          <div style={this.styles.newOrHot}>
             <NewOrHot/>
             <PostMessage/>
           </div>
-          <Message/>
-          <Message/>
+          <div style={this.styles.messageRows}>
+            { messageRows }
+          </div>
         </div>
       </div>
     )
-  }
+  },
+  styles: {
+    messageRows: {
+      padding: '60px',
+    },
+    newOrHot: {
+      paddingTop: '80px',
+    },
+  },
 });
 
 module.exports = ViewAllMessage;
