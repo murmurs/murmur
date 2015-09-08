@@ -3,7 +3,7 @@ var firebase = require('./firebase');
 var app = express();
 var bodyParser = require('body-parser');
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/client'));
 app.use(bodyParser.json());
 
 app.get('/', function(request, response){
@@ -12,6 +12,11 @@ app.get('/', function(request, response){
 
 app.post('/', function(request,response){ //request.body.url = 'newPost'
   firebase.insertPost(request.body);
+  response.send(201);
+})
+
+app.post('/Vote', function(request,response){ //request.body.url = 'newPost'
+  firebase.votePost(request.body);
   response.send(201);
 })
 
