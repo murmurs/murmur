@@ -29,4 +29,10 @@ app.post('/voteComment', function(request,response){ //request.body.url = 'newPo
   response.send(201);
 })
 
+app.post('/Vote', function(request,response){ //request.body.url = 'newPost'
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  firebase.votePost(request.body);
+  response.send(201);
+})
+
 app.listen(8080);
