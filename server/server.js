@@ -2,7 +2,10 @@ var express = require('express');
 var firebase = require('../database/firebase.js');
 var Promise = require('bluebird');
 var sanitize = require('./sanitize.js')
+var options = require('./authentication.js');
 var session = require('express-session');
+var FirebaseStore = require('connect-firebase')(session);
+
 var app = express();
 var bodyParser = require('body-parser');
 var port = process.env.PORT || 8080;
@@ -13,15 +16,16 @@ app.use(bodyParser.urlencoded({
     extended: true })); 
 
 app.use(session({
-  secret: 'murmur',
+  store: new FirebaseStore(options),
+  secret: 'No Soup for you',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: true,
+            maxAge: 1000 * 1000 * 60 * 60 * 24 * 30 //30 days
+          }
 }))
 
 app.use(express.static('../client'))
-
-
 
 app.post('/', function(req, res) {
   //check to see if the sessionId is already in our database
@@ -33,7 +37,7 @@ app.post('/', function(req, res) {
         .then(function(data){
           req.body.message = data;
           firebase.insertPost(req.body);
-        res.send(req.session);
+        res.send(data);
       })
       .catch(function(err){
           console.error(err);
