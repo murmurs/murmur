@@ -1,8 +1,10 @@
 var express = require('express');
 var firebase = require('./firebase');
 var app = express();
+var bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
 
 app.get('/', function(request, response){
   response.send(200);
