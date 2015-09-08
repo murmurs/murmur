@@ -8,7 +8,7 @@ exports.insertPost = function(request){
   var post = freshPost.push();  //ID generator
   var postId = post.key();      //Grabs the ID
   post.set({                    //Pushes the post data into the database
-    messageId : messageId,
+    messageId : postId,
     message : postMessage,
     timestamp : Firebase.ServerValue.TIMESTAMP,
     votes : 0,
@@ -64,4 +64,9 @@ exports.voteComment = function(request){
       return value - 1;
     }
   });
+}
+
+exports.checkSessionId = function(sessionId){
+  //if sessionId is in database, return true
+  //else return false
 }
