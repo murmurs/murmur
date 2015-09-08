@@ -8,7 +8,7 @@ require("./viewAllMessage.css");
 
 var ViewAllMessage = React.createClass({
   render: function() {
-    var messagesObject = this.props;
+    var messagesObject = this.props.messages;
     var messageRows = [];
     for(key in messagesObject){
       var message = messagesObject[key];
