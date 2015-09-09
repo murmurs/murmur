@@ -41,6 +41,7 @@ app.use(function(req, res, next){
           }
 }))
 
+//dont delete this yet might need to use this in the future
 // app.use(session({
 //   store: store,
 //   secret: 'No Soup for you',
