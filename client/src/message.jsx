@@ -9,7 +9,6 @@ module.exports = React.createClass({
     }
   },
   toggleCommentBox: function(){
-    alert('toggle')
     this.setState({ commentBox: !this.state.commentBox })
   },
   render: function() {
