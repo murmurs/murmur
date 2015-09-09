@@ -1,14 +1,23 @@
 var React = require('react');
 var moment = require('moment');
+var CommentBox = require('./commentbox');
 
 var url = 'http://localhost:8080/';
 
 module.exports = React.createClass({
+  getInitialState: function() {
+    return {
+      commentBox: 'false',
+    }
+  },
+  toggleCommentBox: function(){
+    this.setState({ commentBox: !this.state.commentBox })
+  },
   upVote: function(event){
     var messageId = $(event.target).parent().attr('id');
     $.ajax({
       type: 'POST',
-      url: url + 'Vote' ,
+      url: url + 'vote' ,
       contentType: 'application/json',
       data: JSON.stringify({"messageId": messageId, "vote": true}),
       success: function(){
@@ -20,29 +29,33 @@ module.exports = React.createClass({
     var messageId = $(event.target).parent().attr('id');
     $.ajax({
       type: 'POST',
-      url: url + 'Vote' ,
+      url: url + 'vote' ,
       contentType: 'application/json',
       data: JSON.stringify({"messageId": messageId, "vote": false}),
-      success: function(){
+      success: function(d){
+        console.log("POST Vote success", d)
       }
     })
-
   },
   render: function() {
     return (
       <div className="jumbotron" id={ this.props.messageId }>
+        <img src="./src/img/glyphicons-601-chevron-up.png" style={ this.styles.arrows } alt="Up Vote" onClick={ this.upVote }/>
+        <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
+        <div style={ this.styles.votes }>
+          { this.props.votes }
+        </div>
         <div style={ this.styles.messageBox }>
           { this.props.message }
         </div>
         <div style={ this.styles.timestamp }>
           { moment(this.props.timestamp).fromNow() }
         </div>
-        <div style={ this.styles.votes }>
-          { this.props.votes }
-        </div>
-        <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" style={{float: "right", position: "relative", top: "4px"}}/>
-        <img src="./src/img/glyphicons-601-chevron-up.png" alt="Up Vote" onClick={ this.upVote }/>
-        <img src="./src/img/glyphicons-602-chevron-down.png" alt="Down Vote" onClick={ this.downVote }/>
+        <img src="./src/img/glyphicons-151-edit.png"
+          alt="Post a Comment"
+          onClick={ this.toggleCommentBox }
+          style={ this.styles.writeButton }/>
+        { this.state.commentBox ? <CommentBox messageId={ this.props.messageId }/> : <div/>}
       </div>
     )
   },
@@ -52,7 +65,17 @@ module.exports = React.createClass({
     timestamp: {
     },
     votes: {
+      float: "right",
+      fontSize: "30px",
     },
+    writeButton: {
+      float: "left",
+      position: "relative",
+      top: "4px"
+    },
+    arrows: {
+      float: "right"
+    }
   }
 });
 

@@ -34,8 +34,8 @@ exports.votePost = function(request){
 exports.comment = function(request){
   var messageId = request.messageId;      //The post/message ID where the comment resides
   var commentMessage = request.comment;
-
-  var comments = freshPost.child(messageId + '/Comments');
+  console.log('commentMessage', commentMessage, 'messageId', messageId)
+  var comments = freshPost.child(messageId + '/comments');
 
   var comment = comments.push();  //ID generator
   var commentId = comment.key();  //Grabs the ID
@@ -53,7 +53,7 @@ exports.voteComment = function(request){
   var commentId = request.commentId;
   var voteRequest = request.vote; //Still waiting for what will the voting be.
 
-  var vote = freshPost.child(messageId + '/Comments/' + commentId + '/votes');
+  var vote = freshPost.child(messageId + '/comments/' + commentId + '/votes');
 
   vote.transaction(function (value){ //Will still change depending on what will the voting be
     if (voteRequest === true){       //But this will work. It will increment the number of votes.

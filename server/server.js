@@ -15,7 +15,12 @@ app.post('/', function(request,response){ //request.body.url = 'newPost'
   response.send(201);
 })
 
-app.post('/Vote', function(request,response){ //request.body.url = 'newPost'
+app.post('/comment', function(request,response){ //request.body.url = 'newPost'
+  firebase.comment(request.body);
+  response.send(201);
+})
+
+app.post('/vote', function(request,response){ //request.body.url = 'newPost'
   firebase.votePost(request.body);
   response.send(201);
 })
