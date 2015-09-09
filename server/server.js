@@ -16,7 +16,6 @@ app.post('/', function(request,response){ //request.body.url = 'newPost'
 })
 
 app.post('/Vote', function(request,response){ //request.body.url = 'newPost'
-  response.setHeader('Access-Control-Allow-Origin', '*');
   firebase.votePost(request.body);
   response.send(201);
 })

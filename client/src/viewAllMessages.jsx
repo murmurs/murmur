@@ -14,6 +14,7 @@ var ViewAllMessages = React.createClass({
           message={ message.message }
           comments={ message.comments }
           votes={ message.votes }
+          messageId={ message.messageId }
           timestamp={ message.timestamp }/>
       )
     }
