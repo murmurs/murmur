@@ -32,7 +32,7 @@ var ViewAllMessages = React.createClass({
       }),
     }
     return (
-      <div style={this.styles.messageRows}>
+      <div style={ this.styles.messageRows }>
         { messageRowsSortedOptions[this.props.sortBy] }
       </div>
     )

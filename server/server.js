@@ -29,9 +29,4 @@ app.post('/voteComment', function(request,response){ //request.body.url = 'newPo
   response.send(201);
 })
 
-app.post('/Vote', function(request,response){ //request.body.url = 'newPost'
-  firebase.votePost(request.body);
-  response.send(201);
-})
-
 app.listen(8080);
