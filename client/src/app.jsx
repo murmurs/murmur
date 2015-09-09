@@ -1,8 +1,13 @@
 var React = require('react');
 var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
+<<<<<<< HEAD
 var PostMessage = require('./postmessage');
 var InputBox = require('./inputbox')
+=======
+var NewOrHot = require('./neworhot');
+var PostMessage = require('./postmessage');
+>>>>>>> [feat] update to voteMessage
 
 
 var mainView = React.createClass({
@@ -10,9 +15,13 @@ var mainView = React.createClass({
   messages: [],
   getInitialState: function(){
     return {
+<<<<<<< HEAD
       messages: [],
       sort: 'recent',
       input: 'false',
+=======
+      messages: []
+>>>>>>> [feat] update to voteMessage
     }
   },
   componentWillMount: function(){
@@ -24,6 +33,7 @@ var mainView = React.createClass({
       });
     }.bind(this));
   },
+<<<<<<< HEAD
   handleSortRecent: function(){
     this.setState({sort: 'recent'});
   },
@@ -34,12 +44,15 @@ var mainView = React.createClass({
     var newInput = !this.state.input
     this.setState({ input: newInput })
   },
+=======
+>>>>>>> [feat] update to voteMessage
   render: function(){
     return (
       <div>
         <TopBar/>
         <div>
           <div style={this.styles.sortSelectors}>
+<<<<<<< HEAD
           { this.state.input ? <InputBox style={ this.styles.inputBox }/> : <div/>}
             <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBox } style={{ position: "relative", top: "4px"}}/>
             <div className="btn-group" style={{ position: "relative", left: "40%"}}>
@@ -48,6 +61,12 @@ var mainView = React.createClass({
             </div>
           </div>
           <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages }/>
+=======
+            <NewOrHot/>
+            <PostMessage/>
+          </div>
+          <ViewAllMessages messages={ this.state.messages }/>
+>>>>>>> [feat] update to voteMessage
         </div>
       </div>
 
@@ -57,9 +76,12 @@ var mainView = React.createClass({
     sortSelectors: {
       paddingTop: '80px',
     },
+<<<<<<< HEAD
     inputBox: {
       marginTop: '200px'
     }
+=======
+>>>>>>> [feat] update to voteMessage
   }
 })
 
