@@ -15,4 +15,9 @@ app.post('/', function(request,response){ //request.body.url = 'newPost'
   response.send(201);
 })
 
+app.post('/comment', function(request,response){ //request.body.url = 'newPost'
+  firebase.comment(request.body);
+  response.send(201);
+})
+
 app.listen(8080);

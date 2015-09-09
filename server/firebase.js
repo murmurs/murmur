@@ -36,7 +36,7 @@ exports.comment = function(request){
   var messageId = request.messageId;      //The post/message ID where the comment resides
   var commentMessage = request.comment;
 
-  var comments = freshPost.child(messageId + '/Comments');
+  var comments = freshPost.child(messageId + '/comments');
 
   var comment = comments.push();  //ID generator
   var commentId = comment.key();  //Grabs the ID
