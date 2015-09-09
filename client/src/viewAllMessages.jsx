@@ -17,10 +17,13 @@ var ViewAllMessages = React.createClass({
           timestamp={ message.timestamp }/>
       )
     }
+    messageRows.sort(function(a,b){
+      return b.props.timestamp - a.props.timestamp
+    })
     return (
-          <div style={this.styles.messageRows}>
-            { messageRows }
-          </div>
+      <div style={this.styles.messageRows}>
+        { messageRows }
+      </div>
     )
   },
   styles: {
