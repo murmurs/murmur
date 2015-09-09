@@ -20,7 +20,11 @@ exports.votePost = function(request, dataRef){
   var dataRef = dataRef || freshPost;
   var messageId = request.messageId;
   var voteRequest = request.vote; //Still waiting for what will the voting be.
+<<<<<<< HEAD
   var vote = dataRef.child(messageId + '/votes');
+=======
+  var vote = freshPost.child(messageId + '/votes');
+>>>>>>> [feat] Merging features
 
   vote.transaction(function (value){ //Will still change depending on what will the voting be
     if (voteRequest === true){       //But this will work. It will increment the number of votes.
