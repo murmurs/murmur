@@ -6,25 +6,50 @@ var authenticate = require('./utils/authenticate.js');
 var sessionStoreDB = require('./utils/sessionStoreDB.js')
 var session = require('express-session');
 var FirebaseStore = require('connect-firebase')(session);
+var bodyParser = require('body-parser');
 
 var app = express();
-var bodyParser = require('body-parser');
 var port = process.env.PORT || 8080;
+var store = new FirebaseStore(sessionStoreDB.options)
 
-
+//Middlewares
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ 
     extended: true })); 
 
-app.use(session({
-  store: new FirebaseStore(sessionStoreDB.options),
+//this middleware checks to see if the user has already been assigned a sessId
+//we look inside of our session store for their Id and only assign them an
+//Id if we couldn't find it in our store.
+app.use(function(req, res, next){
+  store.get(req.sessionID, function(err, session){
+    if(err){
+      console.error(err);
+    }
+    else if(!session){
+      next()
+    }
+  })
+}, session({
+  store: store,
   secret: 'No Soup for you',
+  rolling: false,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true,
+            httpOnly: true, 
             maxAge: 1000 * 1000 * 60 * 60 * 24 * 30 //30 days
           }
 }))
+
+// app.use(session({
+//   store: store,
+//   secret: 'No Soup for you',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: true,
+//             maxAge: 1000 * 1000 * 60 * 60 * 24 * 30 //30 days
+//           }
+// }))
 
 app.use(express.static('../client'))
 
