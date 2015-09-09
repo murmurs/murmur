@@ -19,7 +19,6 @@ exports.insertPost = function(request){
 exports.votePost = function(request){
   var messageId = request.messageId;
   var voteRequest = request.vote; //Still waiting for what will the voting be.
-
   var vote = freshPost.child(messageId + '/votes');
 
   vote.transaction(function (value){ //Will still change depending on what will the voting be
