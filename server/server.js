@@ -3,7 +3,7 @@ var firebase = require('./firebase');
 var app = express();
 var bodyParser = require('body-parser');
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('../client'));
 app.use(bodyParser.json());
 
 app.get('/', function(request, response){
