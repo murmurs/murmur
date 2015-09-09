@@ -1,7 +1,6 @@
 var React = require('react');
 var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
-var NewOrHot = require('./neworhot');
 var PostMessage = require('./postmessage');
 
 
@@ -10,7 +9,8 @@ var mainView = React.createClass({
   messages: [],
   getInitialState: function(){
     return {
-      messages: []
+      messages: [],
+      sort: 'recent',
     }
   },
   componentWillMount: function(){
@@ -22,16 +22,25 @@ var mainView = React.createClass({
       });
     }.bind(this));
   },
+  handleSortRecent: function(){
+    this.setState({sort: 'recent'});
+  },
+  handleSortPopular: function(){
+    this.setState({sort: 'popular'});
+  },
   render: function(){
     return (
       <div>
         <TopBar/>
         <div>
           <div style={this.styles.sortSelectors}>
-            <NewOrHot/>
+            <div className="btn-group" style={{float: "left", position: "relative", left: "40%"}}>
+              <button className="btn btn-default" onClick={ this.handleSortRecent }>New</button>
+              <button className="btn btn-default" onClick={ this.handleSortPopular }>Hot</button>
+            </div>
             <PostMessage/>
           </div>
-          <ViewAllMessages messages={ this.state.messages }/>
+          <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages }/>
         </div>
       </div>
 

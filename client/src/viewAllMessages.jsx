@@ -17,12 +17,17 @@ var ViewAllMessages = React.createClass({
           timestamp={ message.timestamp }/>
       )
     }
-    messageRows.sort(function(a,b){
-      return b.props.timestamp - a.props.timestamp
-    })
+    var messageRowsSortedOptions = {
+      recent: messageRows.slice().sort(function(a,b){
+        return b.props.timestamp - a.props.timestamp;
+      }),
+      popular: messageRows.slice().sort(function(a,b){
+        return b.props.votes - a.props.votes;
+      }),
+    }
     return (
       <div style={this.styles.messageRows}>
-        { messageRows }
+        { messageRowsSortedOptions[this.props.sortBy] }
       </div>
     )
   },
