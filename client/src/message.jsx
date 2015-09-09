@@ -1,4 +1,5 @@
 var React = require('react');
+var moment = require('moment');
 
 module.exports = React.createClass({
   render: function() {
@@ -8,7 +9,7 @@ module.exports = React.createClass({
           { this.props.message }
         </div>
         <div style={ this.styles.timestamp }>
-          { this.props.timestamp }
+          { moment(this.props.timestamp).fromNow() }
         </div>
         <div style={ this.styles.votes }>
           { this.props.votes }
