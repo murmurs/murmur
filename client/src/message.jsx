@@ -1,7 +1,17 @@
 var React = require('react');
 var moment = require('moment');
+var CommentBox = require('./commentBox');
 
 module.exports = React.createClass({
+  getInitialState: function() {
+    return {
+      commentBox: 'false',
+    }
+  },
+  toggleCommentBox: function(){
+    alert('toggle')
+    this.setState({ commentBox: !this.state.commentBox })
+  },
   render: function() {
     return (
       <div className="jumbotron">
@@ -14,6 +24,11 @@ module.exports = React.createClass({
         <div style={ this.styles.votes }>
           { this.props.votes }
         </div>
+        <img src="./src/img/glyphicons-151-edit.png"
+          alt="Post a Comment"
+          onClick={ this.toggleCommentBox }
+          style={ this.styles.writeButton }/>
+        { this.state.commentBox ? <CommentBox messageId={ this.props.messageId }/> : <div/>}
       </div>
     )
   },
@@ -23,6 +38,11 @@ module.exports = React.createClass({
     timestamp: {
     },
     votes: {
+    },
+    writeButton: {
+      float: "left",
+      position: "relative",
+      top: "4px"
     },
   }
 });

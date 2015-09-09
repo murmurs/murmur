@@ -31,8 +31,7 @@ var mainView = React.createClass({
     this.setState({sort: 'popular'});
   },
   toggleInputBox: function(){
-    var newInput = !this.state.input
-    this.setState({ input: newInput })
+    this.setState({ input: !this.state.input })
   },
   render: function(){
     return (
@@ -40,7 +39,7 @@ var mainView = React.createClass({
         <TopBar/>
         <div>
           <div style={this.styles.sortSelectors}>
-          { this.state.input ? <InputBox style={ this.styles.inputBox }/> : <div/>}
+            { this.state.input ? <InputBox style={ this.styles.inputBox }/> : <div/>}
             <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBox } style={{ position: "relative", top: "4px"}}/>
             <div className="btn-group" style={{ position: "relative", left: "40%"}}>
               <button className="btn btn-default" onClick={ this.handleSortRecent }>New</button>

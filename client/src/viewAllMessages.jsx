@@ -11,6 +11,7 @@ var ViewAllMessages = React.createClass({
       var message = messagesObject[key];
       messageRows.push(
         <Message
+          messageId={ message.messageId }
           message={ message.message }
           comments={ message.comments }
           votes={ message.votes }
@@ -33,7 +34,7 @@ var ViewAllMessages = React.createClass({
   },
   styles: {
     messageRows: {
-      padding: '60px',
+      padding: '10px',
     },
   },
 });
