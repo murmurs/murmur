@@ -33,7 +33,7 @@ var ViewAllMessages = React.createClass({
   },
   styles: {
     messageRows: {
-      padding: '60px',
+      padding: '10px',
     },
   },
 });
