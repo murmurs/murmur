@@ -1,8 +1,8 @@
 var React = require('react');
 var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
-var NewOrHot = require('./neworhot');
 var PostMessage = require('./postmessage');
+var InputBox = require('./inputbox')
 
 
 var mainView = React.createClass({
@@ -10,7 +10,9 @@ var mainView = React.createClass({
   messages: [],
   getInitialState: function(){
     return {
-      messages: []
+      messages: [],
+      sort: 'recent',
+      input: 'false',
     }
   },
   componentWillMount: function(){
@@ -22,16 +24,30 @@ var mainView = React.createClass({
       });
     }.bind(this));
   },
+  handleSortRecent: function(){
+    this.setState({sort: 'recent'});
+  },
+  handleSortPopular: function(){
+    this.setState({sort: 'popular'});
+  },
+  toggleInputBox: function(){
+    var newInput = !this.state.input
+    this.setState({ input: newInput })
+  },
   render: function(){
     return (
       <div>
         <TopBar/>
         <div>
           <div style={this.styles.sortSelectors}>
-            <NewOrHot/>
-            <PostMessage/>
+          { this.state.input ? <InputBox style={ this.styles.inputBox }/> : <div/>}
+            <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBox } style={{ position: "relative", top: "4px"}}/>
+            <div className="btn-group" style={{ position: "relative", left: "40%"}}>
+              <button className="btn btn-default" onClick={ this.handleSortRecent }>New</button>
+              <button className="btn btn-default" onClick={ this.handleSortPopular }>Hot</button>
+            </div>
           </div>
-          <ViewAllMessages messages={ this.state.messages }/>
+          <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages }/>
         </div>
       </div>
 
@@ -41,6 +57,9 @@ var mainView = React.createClass({
     sortSelectors: {
       paddingTop: '80px',
     },
+    inputBox: {
+      marginTop: '200px'
+    }
   }
 })
 

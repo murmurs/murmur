@@ -1,5 +1,5 @@
 var React = require('react');
-var url;
+var url = 'http://localhost:8080/';
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -16,7 +16,15 @@ module.exports = React.createClass({
   },
   handleClick: function(event){
     event.preventDefault();
-    // $.post(url, {message: this.state.message});
+    $.ajax({
+      type: 'POST',
+      url: url,
+      contentType: 'application/json',
+      data: JSON.stringify({ "message": this.state.message }),
+      success: function(d){
+        console.log('POST successful: ', d)
+      }
+    })
     this.setState({message: ''});
     console.log(this.state)
   },
