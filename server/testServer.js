@@ -8,7 +8,6 @@ var session = require('express-session');
 var FirebaseStore = require('connect-firebase')(session);
 
 var app = express();
-
 var bodyParser = require('body-parser');
 var port = process.env.PORT || 8080;
 
@@ -36,16 +35,10 @@ app.post('/', function(req, res) {
   //it has been sanitized, so we must first wait for the
   //data to be clean be using Promise.resolve on our call to sanitize
 
-    Promise.resolve(sanitize.sanitizeJSON(req.body.message))
-      .then(function(data){
-        req.body.message = data;
-        firebase.insertPost(req.body);
-        res.send(data);
-      })
-      .catch(function(err){
-          console.error('INSIDE THE POST', err);
-          res.sendStatus(404)
-      })
+    req.body.message = sanitize.sanitizeJSON(req.body.message);
+    firebase.insertPost(req.body);
+    res.send(data);
+    
 });
 
 app.post('/vote', function(req, res){
