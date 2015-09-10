@@ -1,11 +1,11 @@
 var React = require('react');
 var Message = require('./message');
 
-require("./viewAllMessage.css");
-
 var ViewAllMessages = React.createClass({
   render: function() {
-    var messagesObject = this.props.messages;
+    var messagesObject = this.props.messages; // from Firebase
+
+    // Push messages from Firebase to messageRows
     var messageRows = [];
     for(key in messagesObject){
       var message = messagesObject[key];
@@ -18,6 +18,8 @@ var ViewAllMessages = React.createClass({
           timestamp={ message.timestamp }/>
       )
     }
+
+    // Sort Messages by time or popularity (ie number of votes)
     var messageRowsSortedOptions = {
       recent: messageRows.slice().sort(function(a,b){
         return b.props.timestamp - a.props.timestamp;
@@ -32,11 +34,12 @@ var ViewAllMessages = React.createClass({
       </div>
     )
   },
+
   styles: {
     messageRows: {
       padding: '10px',
     },
-  },
+  }
 });
 
 module.exports = ViewAllMessages;

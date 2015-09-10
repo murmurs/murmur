@@ -2,7 +2,7 @@ var React = require('react');
 var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
 var PostMessage = require('./postmessage');
-var InputBox = require('./inputbox')
+var InputBox = require('./inputbox');
 
 
 var mainView = React.createClass({
@@ -12,11 +12,13 @@ var mainView = React.createClass({
     return {
       messages: [],
       sort: 'recent',
-      input: 'false',
-    }
+      inputBoxDisplay: 'false',
+    };
   },
+
+  // Retrieve the messages data from Firebase
   componentWillMount: function(){
-    this.firebaseRef = new Firebase('https://fiery-heat-3376.firebaseio.com/Fresh%20Post')
+    this.firebaseRef = new Firebase('https://fiery-heat-3376.firebaseio.com/Fresh%20Post');
     this.firebaseRef.on('value', function(dataSnapshot){
       this.messages.push(dataSnapshot.val());
       this.setState({
@@ -24,24 +26,26 @@ var mainView = React.createClass({
       });
     }.bind(this));
   },
+
   handleSortRecent: function(){
     this.setState({sort: 'recent'});
   },
   handleSortPopular: function(){
     this.setState({sort: 'popular'});
   },
-  toggleInputBox: function(){
-    var newInput = !this.state.input
-    this.setState({ input: newInput })
+
+  toggleInputBoxDisplay: function(){
+    this.setState({ inputBoxDisplay: !this.state.inputBoxDisplay });
   },
+
   render: function(){
     return (
       <div>
         <TopBar/>
         <div>
-          <div style={this.styles.sortSelectors}>
-          { this.state.input ? <InputBox style={ this.styles.inputBox }/> : <div/>}
-            <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBox } style={{ position: "relative", top: "4px"}}/>
+          <div style={this.styles.userMenu}>
+            { this.state.inputBoxDisplay ? <InputBox style={ this.styles.inputBox }/> : <div/>}
+            <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBoxDisplay } style={{ position: "relative", top: "4px"}}/>
             <div className="btn-group" style={{ position: "relative", left: "40%"}}>
               <button className="btn btn-default" onClick={ this.handleSortRecent }>New</button>
               <button className="btn btn-default" onClick={ this.handleSortPopular }>Hot</button>
@@ -50,11 +54,10 @@ var mainView = React.createClass({
           <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages }/>
         </div>
       </div>
-
     )
   },
   styles: {
-    sortSelectors: {
+    userMenu: {
       paddingTop: '80px',
     },
     inputBox: {

@@ -1,6 +1,6 @@
 var React = require('react');
 
-module.exports = React.createClass({
+TopBar = React.createClass({
   render: function() {
     return (
       <div className="navbar navbar-inverse navbar-fixed-top">
@@ -13,3 +13,5 @@ module.exports = React.createClass({
     )
   }
 });
+
+module.exports = TopBar;

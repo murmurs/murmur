@@ -4,39 +4,44 @@ var CommentBox = require('./commentbox');
 
 var url = 'http://localhost:8080/';
 
-module.exports = React.createClass({
+var Message = React.createClass({
+
   getInitialState: function() {
     return {
-      commentBox: 'false',
-    }
+      commentBoxDisplay: 'false',
+    };
   },
-  toggleCommentBox: function(){
-    this.setState({ commentBox: !this.state.commentBox })
+
+  toggleCommentBoxDisplay: function(){
+    this.setState({ commentBoxDisplay: !this.state.commentBoxDisplay });
   },
+
+  // Post upvote data to Firebase
   upVote: function(event){
     var messageId = $(event.target).parent().attr('id');
     $.ajax({
       type: 'POST',
       url: url + 'vote' ,
       contentType: 'application/json',
-      data: JSON.stringify({"messageId": messageId, "vote": true}),
+      data: JSON.stringify({"messageId": messageId, "vote": true}), // true means +1
       success: function(){
       }
-    })
+    });
   },
-  downVote: function(event){
 
+  downVote: function(event){
     var messageId = $(event.target).parent().attr('id');
     $.ajax({
       type: 'POST',
       url: url + 'vote' ,
       contentType: 'application/json',
-      data: JSON.stringify({"messageId": messageId, "vote": false}),
+      data: JSON.stringify({"messageId": messageId, "vote": false}),  // false means -1
       success: function(d){
-        console.log("POST Vote success", d)
+        console.log("POST Vote success", d);
       }
-    })
+    });
   },
+
   render: function() {
     return (
       <div className="jumbotron" id={ this.props.messageId }>
@@ -53,12 +58,13 @@ module.exports = React.createClass({
         </div>
         <img src="./src/img/glyphicons-151-edit.png"
           alt="Post a Comment"
-          onClick={ this.toggleCommentBox }
+          onClick={ this.toggleCommentBoxDisplay }
           style={ this.styles.writeButton }/>
-        { this.state.commentBox ? <CommentBox messageId={ this.props.messageId }/> : <div/>}
+        { this.state.commentBoxDisplay ? <CommentBox messageId={ this.props.messageId }/> : <div/>}
       </div>
     )
   },
+
   styles: {
     messageBox: {
     },
@@ -79,18 +85,4 @@ module.exports = React.createClass({
   }
 });
 
-// #yakApp .yak {
-//     position: relative;
-//     background: #fff;
-//     min-height: 200px;
-//     padding: 20px;
-// }
-
-// .row {
-//     margin-left: -15px;
-//     margin-right: -15px;
-// }
-// .row:after {
-//     content: " ";
-//     display: table;
-// }
+module.exports = Message;
