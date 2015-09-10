@@ -5,11 +5,12 @@
 //data on the client side is always a must but just in case
 //always santize the data before it entires our database
 exports.sanitizeJSON = function(jsonInput){
-	return jsonInput
-			.replace(/</g, '')
-			.replace(/>/g, '')
-			.replace(/&/g, '')
-			.replace(/"/g, '')
-			.replace(/'/g, '');
-
+  if(jsonInput){
+  	return jsonInput
+  			.replace(/</g, '')
+  			.replace(/>/g, '')
+  			.replace(/&/g, '')
+  			.replace(/"/g, '')
+  			.replace(/'/g, '');
+  }
 }
