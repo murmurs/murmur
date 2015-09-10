@@ -45,8 +45,10 @@ var mainView = React.createClass({
         <div>
           <div style={this.styles.userMenu}>
             { this.state.inputBoxDisplay ? <InputBox style={ this.styles.inputBox }/> : <div/>}
-            <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBoxDisplay } style={{ position: "relative", top: "4px"}}/>
-            <div className="btn-group" style={{ position: "relative", left: "40%"}}>
+            <span className="pull-right">
+              <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBoxDisplay } style={{ position: "relative", left: "-7px", top: "4px"}}/>
+            </span>
+            <div className="btn-group" style={{ position: "relative", left: "44.5%"}}>
               <button className="btn btn-default" onClick={ this.handleSortRecent }>New</button>
               <button className="btn btn-default" onClick={ this.handleSortPopular }>Hot</button>
             </div>
@@ -58,7 +60,7 @@ var mainView = React.createClass({
   },
   styles: {
     userMenu: {
-      paddingTop: '80px',
+      paddingTop: '80px'
     },
     inputBox: {
       marginTop: '200px'
