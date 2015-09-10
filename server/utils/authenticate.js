@@ -31,8 +31,6 @@ var updateVoterIDs = function(sessId, voteDirection, voterId, messageId){
 	updateVoteTotal(messageId, voteDirection);
 }
 
-
-
 //this function checks to see whether or not our voter has already 
 //voted. If they haven't, they are added to our voterId store and 
 //the vote total is updated
@@ -40,31 +38,39 @@ var updateVoterIDs = function(sessId, voteDirection, voterId, messageId){
 //different from the last vote. Their voteDirection and the vote
 //total will only be updated if the voteDirection is different
 
-exports.checkVoter = function(sessId, requestBody){
- 	var messageId = requestBody.messageId;
-  	var voteDirection = requestBody.voteDirection;
-  	var messageTable = freshPost.child(messageId);
-  	var voterId = freshPost.child(messageId + '/voterId');
+exports.checkMessageVoter = function(requestBody, callback){
+ 	var sessId = requestBody.sessionID;
+  var messageId = requestBody.messageId;
+  var voteDirection = requestBody.voteDirection;
+  var messageTable = freshPost.child(messageId);
+  //if the vote request comes with a commentId then we know that its
+  //vote on a comment not a message
+  var commentId = (requestBody.commentId) ? requestBody.commentId: undefined;
+  var voterId = (!commentId) ? freshPost.child(messageId + '/voterId'):
+                            freshPost.child(messageId + '/comments' + commentId+ '/voterId')
 
-	voterId.once('value', function(snap){
-		if(!snap.hasChild(sessId)){
-			updateVoterIDs(sessId, voteDirection, voterId, messageId);
-		}
-		else {
-			snap.forEach(function(voter){
-				if(voter.key() === sessId){
-					if(voter.val() !== voteDirection){
-						updateVoterIDs(sessId, voteDirection, voterId, messageId);
-					}
-				}
-			})
-		}
+
+  voterId.once('value', function(snap){
+	  if(!snap.hasChild(sessId)){
+		  updateVoterIDs(sessId, voteDirection, voterId, messageId);
+	  }
+	  else {
+		  snap.forEach(function(voter){
+			  if(voter.key() === sessId){
+				  if(voter.val() !== voteDirection){
+					   updateVoterIDs(sessId, voteDirection, voterId, messageId);
+				  }
+		    }
+		  })
+	  }
 
 	});
 
+  callback();
 }
 
 //this function is used to check is the session ID already exists in our DB
+//Up to you to chose how you want to implement it
 exports.checkSessionId = function(sessId, cb){
   //if sessionId is in our storage, return true
   //else return false
