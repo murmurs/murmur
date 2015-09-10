@@ -7,11 +7,15 @@ var ViewAllMessages = React.createClass({
   render: function() {
     var messagesObject = this.props.messages;
     var messageRows = [];
-    for(key in messagesObject){
-      var message = messagesObject[key];
+
+    for(messageKey in messagesObject){
+      var commentRows = [];
+      var message = messagesObject[messageKey];
+
       messageRows.push(
         <Message
           messageId={ message.messageId }
+          key={ message.messageId }
           message={ message.message }
           comments={ message.comments }
           votes={ message.votes }

@@ -53,7 +53,7 @@ exports.voteComment = function(request){
   var commentId = request.commentId;
   var voteRequest = request.vote; //Still waiting for what will the voting be.
 
-  var vote = freshPost.child(messageId + '/Comments/' + commentId + '/votes');
+  var vote = freshPost.child(messageId + '/comments/' + commentId + '/votes');
 
   vote.transaction(function (value){ //Will still change depending on what will the voting be
     if (voteRequest === true){       //But this will work. It will increment the number of votes.
