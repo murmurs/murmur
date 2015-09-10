@@ -2,7 +2,7 @@ var express = require('express');
 var firebase = require('../database/firebase.js');
 var Promise = require('bluebird');
 var sanitize = require('./utils/sanitize.js')
-var authenticate = require('./utils/authenticate.js');
+var authenticate = require('./utils/authenticate.js'); //implementation is up to you
 var session = require('express-session');
 var sessionStoreDB = require('./utils/sessionStoreDB.js')
 var FirebaseStore = require('connect-firebase')(session);
@@ -50,8 +50,8 @@ app.post('/', function(req, res) {
       //whatever data comes back from the promise call is what
       //we will attach to the request message property
       req.body.message = data;
-      firebase.insertPost(req.body, function(){
-        res.sendStatus(201);
+      firebase.insertPost(req.body, function(code){
+        res.sendStatus(code);
       });
     })
     .catch(function(err){
@@ -62,8 +62,8 @@ app.post('/', function(req, res) {
 
 app.post('/vote', function(req, res){
 
-  authenticate.checkMessageVoter(req.body, function(){
-    res.sendStatus(201);
+  firebase.votePost(req.body, function(code){
+    res.sendStatus(code);
   });
 })
 
@@ -73,8 +73,8 @@ app.post('/comment', function(req, res){
   Promise.resole(sanitize.sanitizeJSON(req.body.comment))
     .then(function(data){
       req.body.comment = data;
-      firebase.comment(req.body, function(){
-        res.sendStatus(201);
+      firebase.comment(req.body, function(code){
+        res.sendStatus(code);
       })
     })
     .catch(function(err){
