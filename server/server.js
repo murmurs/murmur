@@ -62,7 +62,7 @@ app.post('/', function(req, res) {
 
 app.post('/vote', function(req, res){
 
-  firebase.votePost(req.body, function(code){
+  firebase.votePost(req.sessionID, req.body, function(code){
     res.sendStatus(code);
   });
 })

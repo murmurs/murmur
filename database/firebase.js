@@ -14,9 +14,11 @@ var updateCommentTotal = function(messageId, commentId){
   })
 }
 
-var updateVoteTotal = function(messageId, voteDirection){
+var updateVoteTotal = function(voteDirection, messageTable, commentId){
   
-  var vote = freshPost.child(messageId + '/votes');
+  var vote = (commentId) ? messageTable.child('comments/' + commentId + '/votes'):
+                 messagaTable.child('votes');
+
   vote.transaction(function (value){ 
     //each voteDirection is sent in as either true or false
     if (voteDirection === 'true'){       
@@ -31,13 +33,13 @@ var updateVoteTotal = function(messageId, voteDirection){
 //this function serves two purposes
 //the first being that it updates the sessID of each voter in our
 //DB, then updates our vote counter based off of their voteDirection
-var updateVoterIDs = function(sessId, voteDirection, voterId, messageId){
+var updateVoterIDs = function(sessId, voteDirection, voterId, messageTable, commentId){
   var setVoterId = {};
   setVoterId[sessId] = voteDirection;
   //use update instead of set because set will erase the
   //already stored voterIds with this current ID
   voterId.update(setVoterId);
-  updateVoteTotal(messageId, voteDirection);
+  updateVoteTotal(voteDirection, messageTable, commentId);
 }
 
 exports.insertPost = function(request, callback){
@@ -91,28 +93,29 @@ exports.comment = function(request, callback){
 //different from the last vote. Their voteDirection and the vote
 //total will only be updated if the voteDirection is different
 
-exports.votePost = function(requestBody, callback){
+exports.votePost = function(sessionID, requestBody, callback){
 
-  var sessId = requestBody.sessionID;
+  var sessId = sessionID;
   var messageId = requestBody.messageId;
   var voteDirection = requestBody.vote;
   var messageTable = freshPost.child(messageId);
-  //if the vote request comes with a commentId then we know that its
-  //vote on a comment not a message
-  var commentId = (requestBody.commentId) ? requestBody.commentId: undefined;
-  var voterId = (!commentId) ? freshPost.child(messageId + '/voterId'):
-                freshPost.child(messageId + '/comments' + commentId+ '/voterId')
 
+  // if the vote request comes with a commentId then we know that its
+  // vote on a comment not a message
+  var commentId = (requestBody.commentId) ? requestBody.commentId: false;
+  var voterId = (commentId) ? messageTable.child('comments/' + commentId + '/voterId'):
+                      messageTable.child('voterId');
+                   
 
   voterId.once('value', function(snap){
     if(!snap.hasChild(sessId)){
-      updateVoterIDs(sessId, voteDirection, voterId, messageId);
+      updateVoterIDs(sessId, voteDirection, voterId, messageTable, commentId);
     }
     else {
       snap.forEach(function(voter){
         if(voter.key() === sessId){
           if(voter.val() !== voteDirection){
-            updateVoterIDs(sessId, voteDirection, voterId, messageId);
+            updateVoterIDs(sessId, voteDirection, voterId, messageTable, commentId);
           }
         }
       })
