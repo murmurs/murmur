@@ -33,7 +33,7 @@ var commentBox = React.createClass({
     this.setState({comment: ''}); // Clear comment box
     console.log(this.state);
   },
-  // two-way binding inputbox's value and this.state.message
+  // two-way binding commentBox's value and this.state.comment
   render: function() {
     return (
         <form>
