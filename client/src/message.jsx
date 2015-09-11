@@ -18,19 +18,20 @@ var Message = React.createClass({
 
   // Post upvote data to Firebase
   upVote: function(event){
-    var messageId = $(event.target).parent().attr('id');
+    messageId = $(event.target).closest('.jumbotron').attr('id');
     $.ajax({
       type: 'POST',
       url: url + 'vote' ,
       contentType: 'application/json',
       data: JSON.stringify({"messageId": messageId, "vote": true}), // true means +1
-      success: function(){
+      success: function(d){
+        console.log("POST Vote success", d);
       }
     });
   },
 
   downVote: function(event){
-    var messageId = $(event.target).parent().attr('id');
+    messageId = $(event.target).closest('.jumbotron').attr('id');
     $.ajax({
       type: 'POST',
       url: url + 'vote' ,
