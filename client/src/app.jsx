@@ -31,7 +31,9 @@ var mainView = React.createClass({
   handleSortPopular: function(){
     this.setState({sort: 'popular'});
   },
-
+  toggleInputBox: function(){
+    this.setState({ input: !this.state.input })
+  },
   render: function(){
     return (
       <div>
