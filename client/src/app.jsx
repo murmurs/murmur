@@ -1,7 +1,6 @@
 var React = require('react');
 var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
-var PostMessage = require('./postmessage');
 var InputBox = require('./inputbox');
 
 
@@ -11,8 +10,7 @@ var mainView = React.createClass({
   getInitialState: function(){
     return {
       messages: [],
-      sort: 'recent',
-      inputBoxDisplay: 'false',
+      sort: 'recent'
     };
   },
 
@@ -34,22 +32,19 @@ var mainView = React.createClass({
     this.setState({sort: 'popular'});
   },
 
-  toggleInputBoxDisplay: function(){
-    this.setState({ inputBoxDisplay: !this.state.inputBoxDisplay });
-  },
-
   render: function(){
     return (
       <div>
         <TopBar/>
         <div>
-          <div style={this.styles.userMenu}>
-            { this.state.inputBoxDisplay ? <InputBox style={ this.styles.inputBox }/> : <div/>}
-            <img src="./src/img/glyphicons-151-edit.png" alt="Post a Message" onClick={ this.toggleInputBoxDisplay } style={{ position: "relative", top: "4px"}}/>
-            <div className="btn-group" style={{ position: "relative", left: "40%"}}>
-              <button className="btn btn-default" onClick={ this.handleSortRecent }>New</button>
-              <button className="btn btn-default" onClick={ this.handleSortPopular }>Hot</button>
+          <div style={this.styles.filter}>
+            <div className="btn-group" style={{ position: "relative", left: "38%"}}>
+              <button className="btn btn-default" onClick={ this.handleSortRecent }> New </button>
+              <button className="btn btn-default" onClick={ this.handleSortPopular }> Hot </button>
+              <button className="btn btn-default">Favorites</button>
+              <button className="btn btn-default">My Posts</button>
             </div>
+            <InputBox />
           </div>
           <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages }/>
         </div>
@@ -57,8 +52,8 @@ var mainView = React.createClass({
     )
   },
   styles: {
-    userMenu: {
-      paddingTop: '80px',
+    filter: {
+      paddingTop: '80px'
     },
     inputBox: {
       marginTop: '200px'

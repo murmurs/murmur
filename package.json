@@ -1,0 +1,41 @@
+{
+  "name": "murmur",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "serve": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/murmur/murmur.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/murmur/murmur/issues"
+  },
+  "homepage": "https://github.com/murmur/murmur#readme",
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "moment": "^2.10.6",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3"
+  },
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "gulp": "^3.9.0",
+    "gulp-cli": "^0.3.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-react": "^3.0.1",
+    "gulp-server-livereload": "^1.5.3",
+    "gulp-util": "^3.0.6",
+    "node-notifier": "^4.2.3",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
+  }
+}
