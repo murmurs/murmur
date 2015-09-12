@@ -21,7 +21,11 @@ var Message = React.createClass({
       type: 'POST',
       url: url + 'vote' ,
       contentType: 'application/json',
-      data: JSON.stringify({"messageId": messageId, "vote": true}),
+      data: JSON.stringify({
+        "messageId": messageId,
+        "vote": true,
+        "token": this.props.token
+      }),
       success: function(){
       }
     })
@@ -34,7 +38,11 @@ var Message = React.createClass({
       type: 'POST',
       url: url + 'vote' ,
       contentType: 'application/json',
-      data: JSON.stringify({"messageId": messageId, "vote": false}),
+      data: JSON.stringify({
+        "messageId": messageId,
+        "vote": false,
+        "token": this.props.token
+      }),
       success: function(){
       }
     })
@@ -56,11 +64,15 @@ var Message = React.createClass({
         commentRows.push(
           <CommentMessage
             key={ comments.commentId }
+            token={ this.props.token }
+            auth={ this.props.auth }
             messageId={ this.props.messageId }
             commentId={ comments.commentId }
             commentMessage={ comments.comment }
             commentVotes={ comments.votes }
-            commentTimestamp={ comments.timestamp }/>
+            commentTimestamp={ comments.timestamp }
+            baseId={ comments.baseId }
+            hairId={ comments.hairId } />
         );
       }
     }
@@ -75,6 +87,7 @@ var Message = React.createClass({
 
     return (
       <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '14px', paddingRight: '14px', paddingTop: '25px', paddingBottom: '25px', backgroundColor: '#ECF0F5'}} >
+
         <div className="container">
           <div className="col-xs-10" style={{ marginBottom: '20px'}}>
             <p style={{fontFamily: 'Roboto', color: 'chocolate', marginLeft: "10px"}}>
@@ -104,7 +117,7 @@ var Message = React.createClass({
                 </span>
               </div>
               <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>
-                <CommentBox messageId={ this.props.messageId }/>
+                <CommentBox messageId={ this.props.messageId } token={ this.props.token } auth={ this.props.auth }/>
                 { commentRowsSortedOptions['recent'] }
               </div>
             </div>

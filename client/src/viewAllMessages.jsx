@@ -7,15 +7,17 @@ var ViewAllMessages = React.createClass({
 
     // Push messages from Firebase to messageRows
     var messageRows = [];
-
     for(messageKey in messagesObject){
       var commentRows = [];
       var message = messagesObject[messageKey];
-
       messageRows.push(
         <Message
           messageId={ message.messageId }
           key={ message.messageId }
+          token={ this.props.token }
+          auth={ this.props.auth }
+          baseId={ message.baseId}
+          hairId={ message.hairId}
           message={ message.message }
           comments={ message.comments }
           votes={ message.votes }

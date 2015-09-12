@@ -12,8 +12,7 @@ module.exports = React.createClass({
   },
   upVote: function(event){
     var commentId = $(event.target).parent().attr('id');
-    console.log('fire up', this.props.messageId, commentId, event.target)
-    console.log('target', $(event.target).parent())
+
     $.ajax({
       type: 'POST',
       url: url + 'voteComment' ,
@@ -22,6 +21,7 @@ module.exports = React.createClass({
         "messageId": this.props.messageId,
         "commentId": commentId,
         "vote": true,
+        "token": this.props.token,
       }),
       success: function(){
       }
@@ -38,6 +38,7 @@ module.exports = React.createClass({
         "messageId": this.props.messageId,
         "commentId": commentId,
         "vote": false,
+        "token": this.props.token,
       }),
       success: function(){
       }
@@ -45,8 +46,8 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-      <div id={ this.props.commentId } className="jumbotron" key={ this.props.commentId }>
-        <Face base={ 11 } hair={ 29 } key={ this.props.commentId } />
+      <div id={ this.props.commentId } className="jumbotron" token={ this.props.token } key={ this.props.commentId }>
+        <Face baseId={ this.props.baseId } hairId={ this.props.hairId } key={ this.props.commentId } />
         <img src="./src/img/glyphicons-601-chevron-up.png" style={ this.styles.arrows } alt="Up Vote" onClick={ this.upVote }/>
         <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
         <div style={ this.styles.votes }>

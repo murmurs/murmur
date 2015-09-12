@@ -22,7 +22,10 @@ var InputBox = React.createClass({
       type: 'POST',
       url: url,
       contentType: 'application/json',
-      data: JSON.stringify({ "message": this.state.message }),
+      data: JSON.stringify({
+        "message": this.state.message,
+        "token": this.props.token
+      }),
       success: function(d){
         console.log('POST successful: ', d);
       }
