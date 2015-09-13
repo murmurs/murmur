@@ -24,7 +24,7 @@ var tokenFactory = exports.tokenFactory = function(optionsObject){
     tokenPayload = {
       uid: guid(),
       likedMessagesId: [],
-      postedMessagesId : [],
+      postedMessagesId : 0,
       votedMessagesId: [],
       baseId: baseId,
       hairId: hairId,

@@ -1,6 +1,6 @@
 var React = require('react');
 var url = 'http://localhost:8080/comment';
-var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6ZmFsc2UsInYiOjAsImQiOnsidWlkIjoiNzcxZWEzMjAtZDA1Ni1mODExLWVmODctNzg1MTUwN2E3NWM2IiwibGlrZWRNZXNzYWdlc0lkIjpbXSwicG9zdGVkTWVzc2FnZXNJZCI6W10sImJhc2VJZCI6MTAsImhhaXJJZCI6MTB9LCJpYXQiOjE0NDIwMzQ4MDB9.bUNMIhtjxvB63K51WJGKbD_gEOWhE0czTWQx9at1Sr4'
+var url = 'http://localhost:8080/';
 
 var commentBox = React.createClass({
   getInitialState: function() {

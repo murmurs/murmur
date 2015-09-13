@@ -2,7 +2,7 @@ var React = require('react');
 var moment = require('moment');
 var Face = require('./face');
 
-var url = 'http://localhost:8080/';
+var url = 'http://0.0.0.0:3000/';
 
 module.exports = React.createClass({
   getInitialState: function() {

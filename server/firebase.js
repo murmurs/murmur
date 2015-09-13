@@ -1,35 +1,75 @@
 var Firebase = require('firebase');
 var myDataRef = new Firebase('https://fiery-heat-3376.firebaseio.com/');
 var tokenFactory = require('./firebaseTokenFactory').tokenFactory
+var Cookies = require('cookies');
 
 var freshPost = myDataRef.child('Fresh Post');
 
-var insertPost = exports.insertPost = function(request, dataRef){
-  var dataRef = dataRef || freshPost;
-  var token = request.body.token;
-
-  dataRef.authWithCustomToken(token, function(error, authData) {
-    if (error) {
-      console.log("Login Failed!", error);
-    } else {
-      // console.log("Login Succeeded!", authData);
-      var postMessage = request.body.message;
-      var post = dataRef.push();  //ID generator
-      var postId = post.key();      //Grabs the ID
-      post.set({                    //Pushes the post data into the database
-        messageId : postId,
-        message : postMessage,
-        timestamp : Firebase.ServerValue.TIMESTAMP,
-        votes : 0,
-        comments : "no comments"
-      })
-      // turn auth data
-      var newJwtPayload = authData.auth.postedMessagesId.push(postId)
-      var newToken = tokenFactory(newJwtPayload);
-
+var setTokenCookie = function (request, response, token){
+    if(token !== undefined){
+      newToken = token;
     }
+    response.cookies.set('token', newToken, {
+      maxAge: 2628000000,   // expires in 1 month
+      httpOnly: false,    // more secure but then can't access from client
+    });
 
-  });
+    response.sendStatus(201)
+}
+
+var insertPost = exports.insertPost = function(request, response, dataRef){
+  var dataRef = dataRef || freshPost;
+  var token = request.cookies.get('token')
+  var newToken;
+  var newJwtClaims;
+
+  if(token){
+    dataRef.authWithCustomToken(token, function(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      } else {
+        console.log("Login Succeeded in firebase!", authData);
+        var postMessage = request.body.message;
+        var post = dataRef.push();  //ID generator
+        var postId = post.key();      //Grabs the ID
+        post.set({                    //Pushes the post data into the database
+          uid: authData.auth.uid,
+          messageId : postId,
+          message : postMessage,
+          timestamp : Firebase.ServerValue.TIMESTAMP,
+          votes : 0,
+          comments : "no comments"
+        })
+        // turn auth data
+        // authData.auth.postedMessagesId = authData.auth.postedMessagesId.concat([postId])
+
+        newJwtClaims = authData.auth;
+        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
+        newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
+        newToken = tokenFactory(newJwtClaims);
+        console.log(newJwtClaims.postedMessagesId);
+        console.log('the new AUTH !!!!!!: ', newJwtClaims)
+        console.log('the new token !!!!!!: ', newToken)
+        // var cookie = new Cookie(request, response)
+        // callback(request, response, { token: newToken, auth: newJwtClaims })
+        console.log('Tooooooooooooooooooooooooken inside POOOST', newToken)
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAUTH inside POOOST', newJwtClaims)
+        // response.cookies.set('token', newToken, {
+        //   maxAge: 2628000000,   // expires in 1 month
+        //   httpOnly: false,    // more secure but then can't access from client
+        // });
+        // response.cookies.set('auth', newJwtClaims, {
+        //   maxAge: 2628000000,   // expires in 1 month
+        //   httpOnly: false,    // more secure but then can't access from client
+        // });
+        // response.send(201)
+        // cookieCallback(request, response, newToken, newJwtClaims.uid)
+        setTokenCookie(request, response, newToken)
+      }
+    });
+  }
+
+  return { newToken: newToken, auth: newJwtClaims }
 }
 
 var votePost = exports.votePost = function(request, dataRef){
