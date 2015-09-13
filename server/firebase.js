@@ -115,7 +115,7 @@ var votePost = exports.votePost = function(request, response, dataRef){
 
 }
 
-var comment = exports.comment = function(request, dataRef){
+var comment = exports.comment = function(request, response, dataRef){
   var dataRef = dataRef || freshPost;
   var token = request.body.token;
 

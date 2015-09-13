@@ -1,6 +1,5 @@
 var React = require('react');
-var url = 'http://localhost:8080/comment';
-var url = 'http://localhost:8080/';
+var url = 'http://0.0.0.0:3000/comment';
 
 var commentBox = React.createClass({
   getInitialState: function() {
