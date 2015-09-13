@@ -6,6 +6,7 @@ var Cookies = require('cookies');
 var freshPost = myDataRef.child('Fresh Post');
 
 var setTokenCookie = exports.setTokenCookie = function (request, response, token){
+    newtoken = tokenFactory()
     if(token !== undefined){
       newToken = token;
     }
@@ -14,7 +15,7 @@ var setTokenCookie = exports.setTokenCookie = function (request, response, token
       httpOnly: false,    // more secure but then can't access from client
     });
 
-    response.sendStatus(200)
+    response.sendStatus(201)
 }
 
 var insertPost = exports.insertPost = function(request, response, dataRef){
