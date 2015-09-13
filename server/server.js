@@ -81,7 +81,6 @@ app.post('/vote', function(request,response){ //request.body.url = 'newPost'
 
 app.post('/voteComment', function(request,response){ //request.body.url = 'newPost'
   firebase.voteComment(request, response);
-  response.send(201);
 })
 
 app.listen(3000, serverUrl);

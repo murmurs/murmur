@@ -143,29 +143,42 @@ var comment = exports.comment = function(request, dataRef){
   });
 }
 
-var voteComment = exports.voteComment = function(request, dataRef){
+var voteComment = exports.voteComment = function(request, response, dataRef){
   var dataRef = dataRef || freshPost;
-  var token = request.body.token;
-  dataRef.authWithCustomToken(token, function(error, authData) {
-    if (error) {
-      console.log("Login Failed!", error);
-    } else {
-      // console.log("Login Succeeded!", authData);
-      var messageId = request.body.messageId
-      var commentId = request.body.commentId;
-      var voteRequest = request.body.vote; //Still waiting for what will the voting be.
+  var token = request.cookies.get('token');
+  var newToken;
+  var newJwtClaims;
+  if(token){
 
-      var vote = dataRef.child(messageId + '/comments/' + commentId + '/votes');
+    dataRef.authWithCustomToken(token, function(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      } else {
+        // console.log("Login Succeeded!", authData);
+        var messageId = request.body.messageId
+        var commentId = request.body.commentId;
+        var voteRequest = request.body.vote; //Still waiting for what will the voting be.
 
-      vote.transaction(function (value){ //Will still change depending on what will the voting be
-        if (voteRequest === true){       //But this will work. It will increment the number of votes.
-          return value + 1;              //Doesn't have authentication yet
-        }
-        else {
-          return value - 1;
-        }
-      });
+        var vote = dataRef.child(messageId + '/comments/' + commentId + '/votes');
 
-    }
-  });
+        vote.transaction(function (value){ //Will still change depending on what will the voting be
+          if (voteRequest === true){       //But this will work. It will increment the number of votes.
+            return value + 1;              //Doesn't have authentication yet
+          }
+          else {
+            return value - 1;
+          }
+        });
+
+        newJwtClaims = authData.auth;
+        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
+        newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
+        newToken = tokenFactory(newJwtClaims);
+
+        setTokenCookie(request, response, newToken)
+
+      }
+    });
+  }
 }
+
