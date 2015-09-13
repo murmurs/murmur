@@ -40,14 +40,14 @@ var mainView = React.createClass({
         <TopBar/>
         <div>
           <div style={this.styles.filter}>
-            <div className="btn-group" style={{ position: "relative", left: "38%"}}>
+            <div className="btn-group" style={{display: 'inline-block'}}>
               <button className="btn btn-default" onClick={ this.handleSortRecent }> New </button>
               <button className="btn btn-default" onClick={ this.handleSortPopular }> Hot </button>
               <button className="btn btn-default">Favorites</button>
               <button className="btn btn-default">My Posts</button>
             </div>
-            <InputBox />
           </div>
+          <InputBox />
           <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages }/>
         </div>
       </div>
@@ -55,7 +55,9 @@ var mainView = React.createClass({
   },
   styles: {
     filter: {
-      paddingTop: '80px'
+      paddingTop: '80px',
+      width: '100%',
+      textAlign: 'center'
     },
     inputBox: {
       marginTop: '200px'

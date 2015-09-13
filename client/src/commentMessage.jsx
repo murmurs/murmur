@@ -45,30 +45,40 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-      <div id={ this.props.commentId } className="jumbotron" key={ this.props.commentId }>
-        <Face base={ 11 } hair={ 29 } key={ this.props.commentId } />
-        <img src="./src/img/glyphicons-601-chevron-up.png" style={ this.styles.arrows } alt="Up Vote" onClick={ this.upVote }/>
-        <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
-        <div style={ this.styles.votes }>
-          { this.props.commentVotes }
+      <div id={ this.props.commentId } key={ this.props.commentId }>
+        <div className="conatiner" style={{float: 'left', clear: 'both', marginBottom: '5px'}}>
+          <div style={ this.styles.commentContainer }>
+            <span style={{float: "left"}}>
+              <Face base={ 11 } hair={ 29 } key={ this.props.commentId }/>
+            </span>
+            <span style={{float: "left"}}>
+              <p style={{fontFamily: 'Roboto', color: 'black', fontSize: '1em'}}>
+                { this.props.commentMessage }
+              </p>
+              <span style={{fontStyle: "italic", fontSize: '.8em', float: "left"}}>
+                ({ moment(this.props.commentTimestamp).fromNow() })
+              </span>
+            </span>
+          </div>
         </div>
-        <div style={ this.props.messageBox }>
-          { this.props.commentMessage }
-        </div>
-        <div style={ this.styles.timestamp }>
-          { moment(this.props.commentTimestamp).fromNow() }
+        <div style={ this.styles.voteContainer }>
+          <img src="./src/img/glyphicons-601-chevron-up.png" style={ this.styles.arrows } alt="Up Vote" onClick={ this.upVote }/>
+            <span className="count"  style={ this.styles.voteCount }> { this.props.commentVotes } </span>
+          <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
         </div>
       </div>
     )
   },
   styles: {
-    messageBox: {
-    },
     timestamp: {
+      float: "left",
+      marginLeft: '10px',
+      position: 'relative',
+      top: '1.5px'
     },
     votes: {
       float: "right",
-      fontSize: "30px",
+      fontSize: "19px"
     },
     writeButton: {
       float: "left",
@@ -77,6 +87,18 @@ module.exports = React.createClass({
     },
     arrows: {
       float: "right"
+    },
+    iconStyle: {
+      marginLeft: "10px",
+      marginRight: "10px",
+    },
+    voteContainer: {
+      width: "20px",
+      float: "right"
+    },
+    voteCount: {
+      margin: 'auto',
+      fontSize: '1.3em'
     }
   }
 });
