@@ -76,12 +76,11 @@ app.post('/comment', function(request, response){ //request.body.url = 'newPost'
 })
 
 app.post('/vote', function(request,response){ //request.body.url = 'newPost'
-  firebase.votePost(request);
-  response.send(201);
+  firebase.votePost(request, response);
 })
 
 app.post('/voteComment', function(request,response){ //request.body.url = 'newPost'
-  firebase.voteComment(request);
+  firebase.voteComment(request, response);
   response.send(201);
 })
 

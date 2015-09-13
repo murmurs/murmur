@@ -72,32 +72,46 @@ var insertPost = exports.insertPost = function(request, response, dataRef){
   return { newToken: newToken, auth: newJwtClaims }
 }
 
-var votePost = exports.votePost = function(request, dataRef){
+var votePost = exports.votePost = function(request, response, dataRef){
 
   var dataRef = dataRef || freshPost;
-  var token = request.body.token;
+  var token = request.cookies.get('token');
+  var newToken;
+  var newJwtClaims;
 
-  dataRef.authWithCustomToken(token, function(error, authData) {
-    if (error) {
-      console.log("Login Failed!", error);
-    } else {
-      // console.log("Login Succeeded!", authData);
-      var dataRef = dataRef || freshPost;
-      var messageId = request.body.messageId;
-      var voteRequest = request.body.vote; //Still waiting for what will the voting be.
-      var vote = dataRef.child(messageId + '/votes');
+  if(token){
 
-      vote.transaction(function (value){ //Will still change depending on what will the voting be
-        if (voteRequest === true){       //But this will work. It will increment the number of votes.
-          return value + 1;              //Doesn't have authentication yet
-        }
-        else {
-          return value - 1;
-        }
-      });
-    }
-  });
+    dataRef.authWithCustomToken(token, function(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      } else {
+        // console.log("Login Succeeded!", authData);
+        var dataRef = dataRef || freshPost;
+        var messageId = request.body.messageId;
+        var voteRequest = request.body.vote; //Still waiting for what will the voting be.
+        var vote = dataRef.child(messageId + '/votes');
 
+        vote.transaction(function (value){ //Will still change depending on what will the voting be
+          if (voteRequest === true){       //But this will work. It will increment the number of votes.
+            return value + 1;              //Doesn't have authentication yet
+          }
+          else {
+            return value - 1;
+          }
+        });
+
+        newJwtClaims = authData.auth;
+        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
+        newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
+        newToken = tokenFactory(newJwtClaims);
+
+        setTokenCookie(request, response, newToken)
+      }
+    });
+
+  } else {
+    response.sendStatus(404)  // look up right error code later
+  }
 
 }
 
