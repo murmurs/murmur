@@ -20,54 +20,16 @@ app.use(function(request, response, next){
       maxAge: 2628000000,   // expires in 1 month
       httpOnly: false,    // more secure but then can't access from client
     })
-    // cookie.set('auth', 'AUTHORIZATIONSSSSSS', { // else create Fresh Cookie token
-    //   maxAge: 2628000000,   // expires in 1 month
-    //   httpOnly: false,    // more secure but then can't access from client
-    // })
   }
   next();
 })
 
-// var cookieCallback = function (request, response, tokenAuth){
-//   app.use(function(request, response, next){
-//     console.log('COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKIES', tokenAuth)
-//     response.cookies.set('token', tokenAuth.token, {
-//       maxAge: 2628000000,   // expires in 1 month
-//       httpOnly: false,    // more secure but then can't access from client
-//     });
-//     response.cookies.set('auth', tokenAuth.auth, {
-//       maxAge: 2628000000,   // expires in 1 month
-//       httpOnly: false,    // more secure but then can't access from client
-//     });
-//     next();
-//   })
-// }
-
 app.get('/', function(request, response){
-  var cookie = new Cookies(request, response);
-  // console.log('Token right before response send',cookie.get('token'))
   response.send(200);
 })
 
 app.post('/', function(request, response){ //request.body.url = 'newPost'
-           console.log('cookie token', request.cookies.get('token'))
-           console.log('tokenAuth', tokenAuth)
-           console.log('COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKIES')
-           var token = request.cookies.get('token');
-
-  var tokenAuth = firebase.insertPost(request, response/*, cookieCallback*/);
-  console.log('TOOOOOOOOOOOOOOOKENAUTHHHHHHH', tokenAuth)
-
-           // response.cookies.set('token', tokenAuth.token, {
-           //   maxAge: 2628000000,   // expires in 1 month
-           //   httpOnly: false,    // more secure but then can't access from client
-           // });
-           // response.cookies.set('auth', tokenAuth.auth, {
-           //   maxAge: 2628000000,   // expires in 1 month
-           //   httpOnly: false,    // more secure but then can't access from client
-           // });
-  // cookieCallback(request, response, token)
-  // response.send(201);
+  firebase.insertPost(request, response);
 })
 
 app.post('/comment', function(request, response){ //request.body.url = 'newPost'
