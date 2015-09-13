@@ -74,10 +74,10 @@ var Message = React.createClass({
     }
 
     return (
-      <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '14px', paddingRight: '14px', paddingTop: '25px', paddingBottom: '25px', backgroundColor: '#ECF0F5'}} >
+      <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '0', paddingRight: '0', paddingTop: '15px', paddingBottom: '7px', backgroundColor: '#ECF0F5'}} >
         <div className="container">
-          <div className="col-xs-10" style={{ marginBottom: '20px'}}>
-            <p style={{fontFamily: 'Roboto', color: 'chocolate', marginLeft: "10px"}}>
+          <div className="col-xs-10" style={{ marginBottom: '20px', paddingLeft:'10px', marginBottom: '0'}}>
+            <p style={{fontFamily: 'Roboto', color: 'chocolate', marginLeft: "10px", marginBottom: '0'}}>
               { this.props.message }
             </p>
           </div>
@@ -88,7 +88,7 @@ var Message = React.createClass({
               <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
             </div>
           </div>
-          <div className="col-xs-12">
+          <div className="col-xs-12" style={{paddingLeft:'10px'}}>
             <div style={ this.styles.timestamp }>
               <img style={ this.styles.iconStyle } src="./src/img/clock.png"/>
               <span style={{fontStyle: "italic", fontSize: '.8em'}}>

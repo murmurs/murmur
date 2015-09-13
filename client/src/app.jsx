@@ -40,7 +40,7 @@ var mainView = React.createClass({
         <TopBar/>
         <div>
           <div style={this.styles.filter}>
-            <div className="btn-group" style={{ position: "relative", left: "38%"}}>
+            <div className="btn-group" style={{ position: "relative", left: "430px"}}>
               <button className="btn btn-default" onClick={ this.handleSortRecent }> New </button>
               <button className="btn btn-default" onClick={ this.handleSortPopular }> Hot </button>
               <button className="btn btn-default">Favorites</button>
