@@ -91,16 +91,16 @@ var Message = React.createClass({
           <div className="col-xs-12">
             <div style={ this.styles.timestamp }>
               <img style={ this.styles.iconStyle } src="./src/img/clock.png"/>
-              <span style={{fontStyle: "italic"}}>
+              <span style={{fontStyle: "italic", fontSize: '.8em'}}>
                 { moment(this.props.timestamp).fromNow() }
               </span>
             </div>
             <div style={ this.styles.comments }>
               <div className="commentViewToggle" onClick={ this.toggleCommentsView }>
                 <img style={ this.styles.iconStyle } src="./src/img/comments.png"/>
-                  { this.state.commentsView ? 'hide ' : 'show ' }
-                <span style={{fontStyle: "italic"}}>
-                    24 comments
+                <span style={{fontStyle: "italic", fontSize: '.8em'}}>
+                  <span style={{fontWeight: 'bold', color: 'blue', fontSize: '1.1em'}}> { this.state.commentsView ? 'hide ' : 'show ' } </span>
+                  24 comments
                 </span>
               </div>
               <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>
@@ -120,7 +120,7 @@ var Message = React.createClass({
     },
     votes: {
       float: "right",
-      fontSize: "19px",
+      fontSize: "19px"
     },
     comments: {
       float: "left"
