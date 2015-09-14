@@ -21,6 +21,7 @@
     "react": "^0.13.3",
     "react-router": "^0.13.3",
     "react-sanfona": "0.0.2",
+    "react-style": "^0.5.5",
     "reactify": "^1.1.1",
     "uuid": "^2.0.1",
     "vinyl-source-stream": "^1.1.0",
