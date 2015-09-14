@@ -3,7 +3,7 @@ var moment = require('moment');
 var CommentBox = require('./commentBox');
 var CommentMessage = require('./commentMessage');
 
-var url = 'http://localhost:8080/';
+var url = 'http://0.0.0.0:3000/';
 
 var Message = React.createClass({
   getInitialState: function() {
@@ -21,7 +21,11 @@ var Message = React.createClass({
       type: 'POST',
       url: url + 'vote' ,
       contentType: 'application/json',
-      data: JSON.stringify({"messageId": messageId, "vote": true}),
+      data: JSON.stringify({
+        "messageId": messageId,
+        "vote": true,
+        "token": this.props.token
+      }),
       success: function(){
       }
     })
@@ -34,7 +38,27 @@ var Message = React.createClass({
       type: 'POST',
       url: url + 'vote' ,
       contentType: 'application/json',
-      data: JSON.stringify({"messageId": messageId, "vote": false}),
+      data: JSON.stringify({
+        "messageId": messageId,
+        "vote": false,
+        "token": this.props.token
+      }),
+      success: function(){
+      }
+    })
+  },
+
+  toggleFavorite: function(event){
+
+    var messageId = $(event.target).closest('.jumbotron').attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url + 'favorite' ,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        "messageId": messageId,
+        "token": this.props.token
+      }),
       success: function(){
       }
     })
@@ -56,11 +80,15 @@ var Message = React.createClass({
         commentRows.push(
           <CommentMessage
             key={ comments.commentId }
+            token={ this.props.token }
+            auth={ this.props.auth }
             messageId={ this.props.messageId }
             commentId={ comments.commentId }
             commentMessage={ comments.comment }
             commentVotes={ comments.votes }
-            commentTimestamp={ comments.timestamp }/>
+            commentTimestamp={ comments.timestamp }
+            baseId={ comments.baseId }
+            hairId={ comments.hairId } />
         );
       }
     }
@@ -73,6 +101,11 @@ var Message = React.createClass({
       }),
     }
 
+    var commentNumber = this.props.comments !== 'no comments' ?
+      Object.keys(this.props.comments).length :
+      'no ';
+
+                    // 119{ commentNumber } comments
     return (
       <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '0', paddingRight: '0', paddingTop: '15px', paddingBottom: '7px', backgroundColor: '#ECF0F5'}} >
         <div className="container">
@@ -98,13 +131,16 @@ var Message = React.createClass({
             <div style={ this.styles.comments }>
               <div className="commentViewToggle" onClick={ this.toggleCommentsView }>
                 <img style={ this.styles.iconStyle } src="./src/img/comments.png"/>
+                <span style={ {float: "right"} } onClick={ this.toggleFavorite }>
+                  Favorite
+                </span>
                 <span style={{fontStyle: "italic", fontSize: '.8em'}}>
                   <span style={{fontWeight: 'bold', color: 'blue', fontSize: '1.1em'}}> { this.state.commentsView ? 'hide ' : 'show ' } </span>
-                  24 comments
+                    { commentNumber + ' comments'}
                 </span>
               </div>
               <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>
-                <CommentBox messageId={ this.props.messageId }/>
+                <CommentBox messageId={ this.props.messageId } token={ this.props.token } auth={ this.props.auth }/>
                 { commentRowsSortedOptions['recent'] }
               </div>
             </div>

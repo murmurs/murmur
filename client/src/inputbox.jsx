@@ -1,5 +1,5 @@
 var React = require('react');
-var url = 'http://localhost:8080/';
+var url = 'http://0.0.0.0:3000/';
 
 var InputBox = React.createClass({
   getInitialState: function() {
@@ -44,7 +44,13 @@ var InputBox = React.createClass({
       type: 'POST',
       url: url,
       contentType: 'application/json',
-      data: JSON.stringify({ "message": this.state.message }),
+      // headers: {'Cookie' : document.cookie },
+      data: JSON.stringify({
+        "uid": this.props.auth.uid,
+        "message": this.state.message,
+        "token": this.props.token
+      }
+      ),
       success: function(d){
         console.log('POST successful: ', d);
       }

@@ -4,6 +4,7 @@
   "description": "",
   "main": "murmurApp.js",
   "dependencies": {
+    "express-jwt": "^3.1.0",
     "jest-cli": "^0.5.1",
     "react": "^0.13.3"
   },

@@ -2,7 +2,7 @@ var React = require('react');
 var moment = require('moment');
 var Face = require('./face');
 
-var url = 'http://localhost:8080/';
+var url = 'http://0.0.0.0:3000/';
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -11,17 +11,16 @@ module.exports = React.createClass({
     }
   },
   upVote: function(event){
-    var commentId = $(event.target).parent().attr('id');
-    console.log('fire up', this.props.messageId, commentId, event.target)
-    console.log('target', $(event.target).parent())
+
     $.ajax({
       type: 'POST',
       url: url + 'voteComment' ,
       contentType: 'application/json',
       data: JSON.stringify({
         "messageId": this.props.messageId,
-        "commentId": commentId,
+        "commentId": this.props.commentId,
         "vote": true,
+        "token": this.props.token,
       }),
       success: function(){
       }
@@ -29,15 +28,15 @@ module.exports = React.createClass({
   },
   downVote: function(event){
 
-    var commentId = $(event.target).parent().attr('id');
     $.ajax({
       type: 'POST',
       url: url + 'voteComment' ,
       contentType: 'application/json',
       data: JSON.stringify({
         "messageId": this.props.messageId,
-        "commentId": commentId,
+        "commentId": this.props.commentId,
         "vote": false,
+        "token": this.props.token,
       }),
       success: function(){
       }
@@ -49,7 +48,7 @@ module.exports = React.createClass({
         <div className="conatiner" style={{float: 'left', clear: 'both', marginBottom: '5px'}}>
           <div style={ this.styles.commentContainer }>
             <span style={{float: "left"}}>
-              <Face base={ 11 } hair={ 29 } key={ this.props.commentId }/>
+              <Face baseId={ this.props.baseId } hairId={ this.props.hairId } key={ this.props.commentId }/>
             </span>
             <span style={{float: "left"}}>
               <p style={{fontFamily: 'Roboto', color: 'black', fontSize: '1em'}}>
