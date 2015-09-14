@@ -36,12 +36,14 @@ var ViewAllMessages = React.createClass({
       popular: messageRows.slice().sort(function(a,b){
         return b.props.votes - a.props.votes;
       }),
-      favorites: messageRows.slice().filter(function(message){
+      favorites: messageRows.filter(function(message){
         if(this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].favorites){
           return this.props.sessions[this.props.auth.uid].favorites.hasOwnProperty(message.props.messageId);
         }
         return false;
-      }.bind(this)),
+      }.bind(this)).sort(function(a,b){ // not sorting correctly - FIX
+        return b.props.timestamp - a.props.timestamp;
+      }),
 
       myPosts: messageRows.filter(function(message){
         if(this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].posted){

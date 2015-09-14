@@ -101,7 +101,9 @@ var Message = React.createClass({
       }),
     }
 
-    // var commentNumber = Object.keys(this.props.comments).length
+    var commentNumber = this.props.comments !== 'no comments' ?
+      Object.keys(this.props.comments).length :
+      'no ';
 
                     // 119{ commentNumber } comments
     return (
@@ -131,10 +133,10 @@ var Message = React.createClass({
                 <img style={ this.styles.iconStyle } src="./src/img/comments.png"/>
                   { this.state.commentsView ? 'hide ' : 'show ' }
                 <span style={{fontStyle: "italic"}}>
-                    { this.props.comments }
+                    { commentNumber + ' comments'}
                 </span>
-                <span onClick={ this.toggleFavorite }>
-                 Favorite
+                <span style={ {float: "right"} } onClick={ this.toggleFavorite }>
+                  Favorite
                 </span>
               </div>
               <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>
