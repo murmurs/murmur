@@ -48,6 +48,22 @@ var Message = React.createClass({
     })
   },
 
+  toggleFavorite: function(event){
+
+    var messageId = $(event.target).closest('.jumbotron').attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url + 'favorite' ,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        "messageId": messageId,
+        "token": this.props.token
+      }),
+      success: function(){
+      }
+    })
+  },
+
   componentDidMount: function () {
     var component = this;
     setTimeout(function () {
@@ -116,6 +132,9 @@ var Message = React.createClass({
                   { this.state.commentsView ? 'hide ' : 'show ' }
                 <span style={{fontStyle: "italic"}}>
                     { this.props.comments }
+                </span>
+                <span onClick={ this.toggleFavorite }>
+                 Favorite
                 </span>
               </div>
               <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>

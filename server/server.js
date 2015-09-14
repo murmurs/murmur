@@ -48,5 +48,9 @@ app.post('/voteComment', function(request,response){ //request.body.url = 'newPo
   firebase.voteComment(request, response);
 })
 
+app.post('/favorite', function(request,response){ //request.body.url = 'newPost'
+  firebase.toggleFavorite(request, response);
+})
+
 app.listen(3000, serverUrl);
 

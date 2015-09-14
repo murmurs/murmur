@@ -180,3 +180,49 @@ var voteComment = exports.voteComment = function(request, response, dataRef){
   }
 }
 
+var toggleFavorite = exports.toggleFavorite = function(request, response, dataRef){
+  var dataRef = dataRef || freshPost;
+  var token = request.cookies.get('token');
+  var newToken;
+  var newJwtClaims;
+  var removeFavorite = false
+  if(token){
+
+    dataRef.authWithCustomToken(token, function(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      } else {
+        // console.log("Login Succeeded!", authData);
+        var messageId = request.body.messageId
+
+        var fbRef = dataRef.parent()
+        var favoritesIdRef = fbRef.child('sessions/' + authData.auth.uid + '/favorites/' + messageId)
+
+        favoritesIdRef.once('value', function(snapshot){
+          if(snapshot.val()){
+            favoritesIdRef.set(null);
+          } else{
+            console.log('set to TRUUUUUUUUUUUUUUUE')
+            favoritesIdRef.set({
+              type: 'true',
+            })
+          }
+        })
+
+        if(removeFavorite){
+          setTimeout(function(){
+            favoritesIdRef.remove()
+          })
+        }
+
+        newJwtClaims = authData.auth;
+        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
+        newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
+        newToken = tokenFactory(newJwtClaims);
+
+        setTokenCookie(request, response, newToken)
+      }
+    });
+  }
+}
+
