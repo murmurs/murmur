@@ -86,17 +86,48 @@ var votePost = exports.votePost = function(request, response, dataRef){
         // console.log("Login Succeeded!", authData);
         var dataRef = dataRef || freshPost;
         var messageId = request.body.messageId;
-        var voteRequest = request.body.vote; //Still waiting for what will the voting be.
+        var voteRequest = request.body.vote;
         var vote = dataRef.child(messageId + '/votes');
 
-        vote.transaction(function (value){ //Will still change depending on what will the voting be
-          if (voteRequest === true){       //But this will work. It will increment the number of votes.
-            return value + 1;              //Doesn't have authentication yet
+        var fbRef = freshPost.parent()
+        var votedIdRef = fbRef.child('sessions/' + authData.auth.uid + '/voted/' + messageId);
+        
+        votedIdRef.once('value', function(snapshot){
+          if(snapshot.val()){
+            var value = snapshot.val();
+            if (value.type === "downvoted"){
+              vote.transaction(function (value){
+                if (voteRequest === true) {
+                  votedIdRef.set(null);
+                  return value + 1;
+                }
+              });
+            }
+            else {
+              vote.transaction(function (value){
+                if (voteRequest === false) {
+                  votedIdRef.set(null);
+                  return value - 1;
+                }
+              });
+            }
+          } else {
+            vote.transaction(function (value){
+              if (voteRequest === true) {
+                votedIdRef.set({
+                  type : "upvoted"
+                });
+                return value + 1;
+              }
+              else {
+                votedIdRef.set({
+                  type : "downvoted"
+                });
+                return value - 1;
+              }
+            });
           }
-          else {
-            return value - 1;
-          }
-        });
+        })
 
         newJwtClaims = authData.auth;
         console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
@@ -167,22 +198,53 @@ var voteComment = exports.voteComment = function(request, response, dataRef){
         var voteRequest = request.body.vote; //Still waiting for what will the voting be.
 
         var vote = dataRef.child(messageId + '/comments/' + commentId + '/votes');
-
-        vote.transaction(function (value){ //Will still change depending on what will the voting be
-          if (voteRequest === true){       //But this will work. It will increment the number of votes.
-            return value + 1;              //Doesn't have authentication yet
+        
+        var fbRef = freshPost.parent()
+        var votedIdRef = fbRef.child('sessions/' + authData.auth.uid + '/voted/' + commentId);
+        
+        votedIdRef.once('value', function(snapshot){
+          if(snapshot.val()){
+            var value = snapshot.val();
+            if (value.type === "downvoted"){
+              vote.transaction(function (value){
+                if (voteRequest === true) {
+                  votedIdRef.set(null);
+                  return value + 1;
+                }
+              });
+            }
+            else {
+              vote.transaction(function (value){
+                if (voteRequest === false) {
+                  votedIdRef.set(null);
+                  return value - 1;
+                }
+              });
+            }
+          } else {
+            vote.transaction(function (value){
+              if (voteRequest === true) {
+                votedIdRef.set({
+                  type : "upvoted"
+                });
+                return value + 1;
+              }
+              else {
+                votedIdRef.set({
+                  type : "downvoted"
+                });
+                return value - 1;
+              }
+            });
           }
-          else {
-            return value - 1;
-          }
-        });
+        })
 
         newJwtClaims = authData.auth;
-        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
+        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId);
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
 
-        setTokenCookie(request, response, newToken)
+        setTokenCookie(request, response, newToken);
 
       }
     });
@@ -217,12 +279,6 @@ var toggleFavorite = exports.toggleFavorite = function(request, response, dataRe
             })
           }
         })
-
-        if(removeFavorite){
-          setTimeout(function(){
-            favoritesIdRef.remove()
-          })
-        }
 
         newJwtClaims = authData.auth;
         console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)

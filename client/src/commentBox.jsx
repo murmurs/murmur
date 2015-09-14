@@ -35,11 +35,33 @@ var commentBox = React.createClass({
     this.setState({comment: ''}); // Clear comment box
     console.log(this.props.auth);
   },
+
+   enterPressed: function(event) {
+    if(event.keyCode === 13) {
+      event.preventDefault();
+      $.ajax({ // Post comment
+        type: 'POST',
+        url: url,
+        contentType: 'application/json',
+        data: JSON.stringify({
+          "comment": this.state.comment,
+          'messageId': this.props.messageId,
+          "token": this.props.token,
+        }),
+        success: function(d){
+          console.log('POST successful: ', d);
+        }
+      });
+      this.setState({comment: ''}); // Clear comment box
+      console.log(this.state);
+    }
+  },
+
   // two-way binding commentBox's value and this.state.comment
   render: function() {
     return (
         <div className="input-group" style = {{padding: '15px'}}>
-          <input value={this.state.comment} onChange={this.handleChange} type="text" className="form-control" placeholder="Enter your comment here."/>
+          <input value={this.state.comment} onChange={this.handleChange} onKeyDown={this.enterPressed} type="text" className="form-control" placeholder="Enter your comment here."/>
           <span className="input-group-btn">
             <button onClick={this.handleClick} className="btn btn-success" type="button"> Submit </button>
           </span>
