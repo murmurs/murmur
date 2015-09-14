@@ -129,13 +129,22 @@ var comment = exports.comment = function(request, response, dataRef){
       var comment = comments.push();  //ID generator
       var commentId = comment.key();  //Grabs the ID
 
-      comment.set({                   //Pushes the comment data into the post/message
-        commentId : commentId,
-        comment : commentMessage,
-        timestamp : Firebase.ServerValue.TIMESTAMP,
-        votes : 0,
-        baseId: authData.auth.baseId,
-        hairId: authData.auth.hairId,
+      var postedRef = dataRef.parent().child('sessions/' + authData.auth.uid + '/posted')
+      postedRef.once('value', function(snapshot){
+        if(snapshot.val() && snapshot.val().hasOwnProperty(messageId)){ //if Commenter is OP
+          authData.auth.baseId = 'OP'   //Todo: create OP image
+          authData.auth.hairId = 'OP'   //Todo: create OP image
+        }
+
+        comment.set({                   //Pushes the comment data into the post/message
+          commentId : commentId,
+          comment : commentMessage,
+          timestamp : Firebase.ServerValue.TIMESTAMP,
+          votes : 0,
+          baseId: authData.auth.baseId,
+          hairId: authData.auth.hairId,
+        })
+
       })
     }
   });
