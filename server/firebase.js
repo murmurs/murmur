@@ -86,50 +86,48 @@ var votePost = exports.votePost = function(request, response, dataRef){
         // console.log("Login Succeeded!", authData);
         var dataRef = dataRef || freshPost;
         var messageId = request.body.messageId;
-        var voteRequest = request.body.vote; //Still waiting for what will the voting be.
+        var voteRequest = request.body.vote;
         var vote = dataRef.child(messageId + '/votes');
 
         var fbRef = freshPost.parent()
         var votedIdRef = fbRef.child('sessions/' + authData.auth.uid + '/voted/' + messageId);
         
-        vote.transaction(function (value){
-          if (voteRequest === true){
-            votedIdRef.once('value', function(snapshot){
-              if(snapshot.val()){
-                var value = snapshot.val();
-                if (value.type === "downvoted"){
-                  voteIdRef.set(null)
+        votedIdRef.once('value', function(snapshot){
+          if(snapshot.val()){
+            var value = snapshot.val();
+            if (value.type === "downvoted"){
+              vote.transaction(function (value){
+                if (voteRequest === true) {
+                  votedIdRef.set(null);
                   return value + 1;
                 }
-                return value;
-              } else {
-                voteIdRef.set({
-                  type: 'upvoted',
-                })
-                return value + 1;
-              }
-            })
-          }
-          else {
-            votedIdRef.once('value', function(snapshot){
-              if(snapshot.val()){
-                var value = snapshot.val();
-                if (value.type === "upvoted"){
-                  voteIdRef.set(null)
+              });
+            }
+            else {
+              vote.transaction(function (value){
+                if (voteRequest === false) {
+                  votedIdRef.set(null);
                   return value - 1;
                 }
-                return value;
-              } else {
-                voteIdRef.set({
-                  type: 'downvoted',
-                })
+              });
+            }
+          } else {
+            vote.transaction(function (value){
+              if (voteRequest === true) {
+                votedIdRef.set({
+                  type : "upvoted"
+                });
+                return value + 1;
+              }
+              else {
+                votedIdRef.set({
+                  type : "downvoted"
+                });
                 return value - 1;
               }
-            })
+            });
           }
-        });
-
-        
+        })
 
         newJwtClaims = authData.auth;
         console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
@@ -203,50 +201,50 @@ var voteComment = exports.voteComment = function(request, response, dataRef){
         
         var fbRef = freshPost.parent()
         var votedIdRef = fbRef.child('sessions/' + authData.auth.uid + '/voted/' + commentId);
-
-        vote.transaction(function (value){
-          if (voteRequest === true){
-            votedIdRef.once('value', function(snapshot){
-              if(snapshot.val()){
-                var value = snapshot.val();
-                if (value.type === "downvoted"){
-                  voteIdRef.set(null)
+        
+        votedIdRef.once('value', function(snapshot){
+          if(snapshot.val()){
+            var value = snapshot.val();
+            if (value.type === "downvoted"){
+              vote.transaction(function (value){
+                if (voteRequest === true) {
+                  votedIdRef.set(null);
                   return value + 1;
                 }
-                return value;
-              } else {
-                voteIdRef.set({
-                  type: 'upvoted',
-                })
-                return value + 1;
-              }
-            })
-          }
-          else {
-            votedIdRef.once('value', function(snapshot){
-              if(snapshot.val()){
-                var value = snapshot.val();
-                if (value.type === "upvoted"){
-                  voteIdRef.set(null)
+              });
+            }
+            else {
+              vote.transaction(function (value){
+                if (voteRequest === false) {
+                  votedIdRef.set(null);
                   return value - 1;
                 }
-                return value;
-              } else {
-                voteIdRef.set({
-                  type: 'downvoted',
-                })
+              });
+            }
+          } else {
+            vote.transaction(function (value){
+              if (voteRequest === true) {
+                votedIdRef.set({
+                  type : "upvoted"
+                });
+                return value + 1;
+              }
+              else {
+                votedIdRef.set({
+                  type : "downvoted"
+                });
                 return value - 1;
               }
-            })
+            });
           }
-        });
+        })
 
         newJwtClaims = authData.auth;
-        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
+        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId);
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
 
-        setTokenCookie(request, response, newToken)
+        setTokenCookie(request, response, newToken);
 
       }
     });
