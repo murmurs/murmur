@@ -44,7 +44,7 @@ var ViewAllMessages = React.createClass({
       }.bind(this)),
 
       myPosts: messageRows.filter(function(message){
-        if(this.props.sessions[this.props.auth.uid]){
+        if(this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].posted){
           return this.props.sessions[this.props.auth.uid].posted.hasOwnProperty(message.props.messageId);
         }
         return false;
