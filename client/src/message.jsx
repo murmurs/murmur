@@ -3,7 +3,7 @@ var moment = require('moment');
 var CommentBox = require('./commentBox');
 var CommentMessage = require('./commentMessage');
 
-var url = 'http://0.0.0.0:3000/';
+var url = 'http://107.170.240.99:4000/';
 
 var Message = React.createClass({
   getInitialState: function() {

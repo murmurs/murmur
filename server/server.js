@@ -4,11 +4,12 @@ var tokenFactory = require('./firebaseTokenFactory').tokenFactory;
 var app = express();
 var bodyParser = require('body-parser');
 var Cookies = require("cookies");
-var serverUrl = '0.0.0.0';
+var serverUrl = '107.170.240.99';
 var fs = require('fs')
 
 app.use('/murmur', express.static('../client'));
 app.use(bodyParser.json());
+
 
 app.use(Cookies.express())
 
@@ -50,7 +51,33 @@ app.get('/', function(request, response){
 })
 
 app.post('/', function(request, response){ //request.body.url = 'newPost'
-  firebase.insertPost(request, response);
+
+  var data = ''
+  request.on('data', function(chunk){
+    data += chunk;
+  });
+
+  var slackObject = {}
+  request.on('end', function(){
+    data.split('&').forEach(function(keyVal){
+      var keyValArr = keyVal.split('=');
+      var key = keyValArr[0];
+      var val = keyValArr[1];
+      slackObject[key] = val;
+    })
+ 
+    function urlDecode(str) {
+      return decodeURIComponent((str+'').replace(/\+/g, '%20'));
+    }	
+
+    if(slackObject.token === 'nZg1PC40VFQvtd4efRvcr14N'){
+      request.body.token = tokenFactory();
+      request.body.message = urlDecode(slackObject.text);
+    }
+    console.log('SLAAAAAAAAACK', request.body);
+    firebase.insertPost(request, response);
+  })
+
 })
 
 app.post('/comment', function(request, response){ //request.body.url = 'newPost'
@@ -69,5 +96,5 @@ app.post('/favorite', function(request,response){ //request.body.url = 'newPost'
   firebase.toggleFavorite(request, response);
 })
 
-app.listen(3000, serverUrl);
+app.listen(4000, serverUrl);
 
