@@ -85,11 +85,11 @@ var Message = React.createClass({
       }),
     }
 
-    var commentNumber = Object.keys(this.props.comments).length
+    // var commentNumber = Object.keys(this.props.comments).length
 
+                    // 119{ commentNumber } comments
     return (
       <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '14px', paddingRight: '14px', paddingTop: '25px', paddingBottom: '25px', backgroundColor: '#ECF0F5'}} >
-
         <div className="container">
           <div className="col-xs-10" style={{ marginBottom: '20px'}}>
             <p style={{fontFamily: 'Roboto', color: 'chocolate', marginLeft: "10px"}}>
@@ -116,7 +116,6 @@ var Message = React.createClass({
                   { this.state.commentsView ? 'hide ' : 'show ' }
                 <span style={{fontStyle: "italic"}}>
                     { this.props.comments }
-                    { commentNumber } comments
                 </span>
               </div>
               <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>

@@ -43,18 +43,24 @@ var insertPost = exports.insertPost = function(request, response, dataRef){
         })
         // turn auth data
         // authData.auth.postedMessagesId = authData.auth.postedMessagesId.concat([postId])
+        var fbRef = dataRef.parent()
+        var postIdRef = fbRef.child('sessions/' + authData.auth.uid + '/posted/' + postId)
+        postIdRef.set({
+          type: 'true',
+        })
 
         newJwtClaims = authData.auth;
         console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
         console.log(newJwtClaims.postedMessagesId);
-        console.log('the new AUTH !!!!!!: ', newJwtClaims)
-        console.log('the new token !!!!!!: ', newToken)
+        // console.log('the new AUTH !!!!!!: ', newJwtClaims)
+        // console.log('the new token !!!!!!: ', newToken)
         // var cookie = new Cookie(request, response)
         // callback(request, response, { token: newToken, auth: newJwtClaims })
-        console.log('Tooooooooooooooooooooooooken inside POOOST', newToken)
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAUTH inside POOOST', newJwtClaims)
+        // console.log('Tooooooooooooooooooooooooken inside POOOST', newToken)
+        // console.log('AAAAAAAAAAAAAAAAAAAAAAAAUTH inside POOOST', newJwtClaims)
+        // console.log('AAAAAAAAAAAAAAAAAAAAAAAAUTH inside POOOST', response)
 
         setTokenCookie(request, response, newToken)
       }

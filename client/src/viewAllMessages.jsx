@@ -13,6 +13,7 @@ var ViewAllMessages = React.createClass({
       messageRows.push(
         <Message
           uid={ message.uid }
+          sessions={ this.props.sessions }
           messageId={ message.messageId }
           key={ message.messageId }
           token={ this.props.token }
@@ -35,17 +36,20 @@ var ViewAllMessages = React.createClass({
       popular: messageRows.slice().sort(function(a,b){
         return b.props.votes - a.props.votes;
       }),
-      TBA: messageRows.slice().sort(function(a,b){
+      favorites: messageRows.slice().sort(function(a,b){
         return b.props.votes - a.props.votes;
       }),
       myPosts: messageRows.filter(function(message){
-        return message.uid === this.props.auth.uid;
-        // return message.props.auth.uid === message.props.uid;
+        if(this.props.sessions[this.props.auth.uid]){
+          return this.props.sessions[this.props.auth.uid].posted.hasOwnProperty(message.props.messageId);
+        }
+        return false;
       }.bind(this))
     }
     return (
       <div style={ this.styles.messageRows }>
         { messageRowsSortedOptions[this.props.sortBy] }
+
       </div>
     )
   },

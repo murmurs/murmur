@@ -25,10 +25,11 @@ var mainView = React.createClass({
   messages: [],
   getInitialState: function(){
     return {
-      messages: [],
+      messages: '',
       sort: 'recent',
       token: '',
       auth: '',
+      sessions: '',
     };
   },
 
@@ -36,7 +37,7 @@ var mainView = React.createClass({
   componentWillMount: function(){
     if(token){
       var context = this;
-      this.firebaseRef = new Firebase('https://fiery-heat-3376.firebaseio.com/Fresh%20Post');
+      this.firebaseRef = new Firebase('https://fiery-heat-3376.firebaseio.com/');
       this.firebaseRef.authWithCustomToken(token, function(error, authData){
         if(error){
           console.log('Problem connecting to Database')
@@ -48,11 +49,23 @@ var mainView = React.createClass({
           });
         }
       })
-      this.firebaseRef.on('value', function(dataSnapshot){
+      this.messageRef = this.firebaseRef.child('Fresh Post');
+      this.messageRef.on('value', function(dataSnapshot){
         this.messages.push(dataSnapshot.val());
         this.setState({
           messages: dataSnapshot.val()
         });
+        console.log('inFreshPost', dataSnapshot.val())
+      }.bind(this));
+
+      this.sessionsRef = this.firebaseRef.child('sessions');
+      this.sessionsRef.on('value', function(dataSnapshot){
+        this.messages.push(dataSnapshot.val());
+        this.setState({
+          sessions: dataSnapshot.val()
+        });
+      // console.log('SESSSSSSSSSSSSSSSSionREF', this.sessionRef.toString())
+        console.log('inSession', dataSnapshot.val())
       }.bind(this));
     }
   },
@@ -83,7 +96,7 @@ var mainView = React.createClass({
             </div>
             <InputBox token={ this.state.token } auth={ this.state.auth }/>
           </div>
-          <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages } token={ this.state.token } auth={ this.state.auth }/>
+          <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages } sessions={ this.state.sessions }token={ this.state.token } auth={ this.state.auth }/>
         </div>
       </div>
     )

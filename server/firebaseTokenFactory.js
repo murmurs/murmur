@@ -21,6 +21,7 @@ var tokenFactory = exports.tokenFactory = function(optionsObject){
   } else{ // New Session Token
     var baseId = randomFromInterval(1,18);
     var hairId = randomFromInterval(1,99);
+    // todo: set guid() to firebase push generated key
     tokenPayload = {
       uid: guid(),
       likedMessagesId: [],
