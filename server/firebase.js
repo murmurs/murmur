@@ -7,17 +7,17 @@ var httpRequest = require('request');
 var freshPost = myDataRef.child('Fresh Post');
 
 var setTokenCookie = exports.setTokenCookie = function (request, response, token){
-    newtoken = tokenFactory()
-    if(token !== undefined){
-      newToken = token;
-    }
-    response.cookies.set('token', newToken, {
-      maxAge: 2628000000,   // expires in 1 month
-      httpOnly: false,    // more secure but then can't access from client
-    });
-    response.send("MurMur'd");
-    //response.sendStatus(201)
-}
+  newtoken = tokenFactory()
+  if(token !== undefined){
+    newToken = token;
+  }
+  response.cookies.set('token', newToken, {
+    maxAge: 2628000000,   // expires in 1 month
+    httpOnly: false,    // more secure but then can't access from client
+  });
+  response.send("MurMur'd");
+};
+
 
 var insertPost = exports.insertPost = function(request, response, dataRef){
   var dataRef = dataRef || freshPost;
@@ -25,15 +25,16 @@ var insertPost = exports.insertPost = function(request, response, dataRef){
   var newToken;
   var newJwtClaims;
 
-  if(token){
+  if (token) {
     dataRef.authWithCustomToken(token, function(error, authData) {
       if (error) {
         console.log("Login Failed!", error);
-      } else {
-        console.log("Login Succeeded in firebase!", authData);
+      } 
+      else {
         var postMessage = request.body.message;
-        var post = dataRef.push();  //ID generator
+        var post = dataRef.push();    //ID generator
         var postId = post.key();      //Grabs the ID
+        
         post.set({                    //Pushes the post data into the database
           uid: authData.auth.uid,
           messageId : postId,
@@ -41,21 +42,16 @@ var insertPost = exports.insertPost = function(request, response, dataRef){
           timestamp : Firebase.ServerValue.TIMESTAMP,
           votes : 0,
           comments : "no comments"
-        })
-        // turn auth data
-        // authData.auth.postedMessagesId = authData.auth.postedMessagesId.concat([postId])
+        });
+        
         var fbRef = dataRef.parent()
-        var postIdRef = fbRef.child('sessions/' + authData.auth.uid + '/posted/' + postId)
-        postIdRef.set({
-          type: 'true',
-        })
+        var postIdRef = fbRef.child('sessions/' + authData.auth.uid + '/posted/' + postId);
+        
+        postIdRef.set({ type: 'true' });
 
         newJwtClaims = authData.auth;
-        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
-        console.log(newJwtClaims.postedMessagesId);
-
         var url = 'https://mks22.slack.com/api/chat.postMessage'
 
         slackMessage = {
@@ -75,7 +71,7 @@ var insertPost = exports.insertPost = function(request, response, dataRef){
         );
 
 
-        setTokenCookie(request, response, newToken)
+        setTokenCookie(request, response, newToken);
       }
     });
   }
@@ -84,31 +80,32 @@ var insertPost = exports.insertPost = function(request, response, dataRef){
 }
 
 var votePost = exports.votePost = function(request, response, dataRef){
-
   var dataRef = dataRef || freshPost;
   var token = request.cookies.get('token');
   var newToken;
   var newJwtClaims;
 
-  if(token){
+  if (token) {
 
     dataRef.authWithCustomToken(token, function(error, authData) {
       if (error) {
         console.log("Login Failed!", error);
-      } else {
-        // console.log("Login Succeeded!", authData);
+      } 
+      else {
         var dataRef = dataRef || freshPost;
         var messageId = request.body.messageId;
         var voteRequest = request.body.vote;
-        var vote = dataRef.child(messageId + '/votes');
 
         var fbRef = freshPost.parent()
         var votedIdRef = fbRef.child('sessions/' + authData.auth.uid + '/voted/' + messageId);
         
+        var vote = dataRef.child(messageId + '/votes');
+        
         votedIdRef.once('value', function(snapshot){
-          if(snapshot.val()){
+          if (snapshot.val()) {
             var value = snapshot.val();
-            if (value.type === "downvoted"){
+            
+            if (value.type === "downvoted") {
               vote.transaction(function (value){
                 if (voteRequest === true) {
                   votedIdRef.set(null);
@@ -124,37 +121,32 @@ var votePost = exports.votePost = function(request, response, dataRef){
                 }
               });
             }
-          } else {
+          } 
+          else {
             vote.transaction(function (value){
               if (voteRequest === true) {
-                votedIdRef.set({
-                  type : "upvoted"
-                });
+                votedIdRef.set({ type : "upvoted" });
                 return value + 1;
               }
               else {
-                votedIdRef.set({
-                  type : "downvoted"
-                });
+                votedIdRef.set({ type : "downvoted" });
                 return value - 1;
               }
             });
           }
-        })
+        });
 
         newJwtClaims = authData.auth;
-        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
 
-        setTokenCookie(request, response, newToken)
+        setTokenCookie(request, response, newToken);
       }
     });
-
-  } else {
-    response.sendStatus(404)  // look up right error code later
+  } 
+  else {
+    response.sendStatus(404);  // look up right error code later
   }
-
 }
 
 var comment = exports.comment = function(request, response, dataRef){
@@ -164,8 +156,8 @@ var comment = exports.comment = function(request, response, dataRef){
   dataRef.authWithCustomToken(token, function(error, authData) {
     if (error) {
       console.log("Login Failed!", error);
-    } else {
-      // console.log("Login Succeeded!", authData);
+    } 
+    else {
       var messageId = request.body.messageId;      //The post/message ID where the comment resides
       var commentMessage = request.body.comment;
       var comments = dataRef.child( messageId + '/comments');
@@ -173,23 +165,25 @@ var comment = exports.comment = function(request, response, dataRef){
       var comment = comments.push();  //ID generator
       var commentId = comment.key();  //Grabs the ID
 
-      var postedRef = dataRef.parent().child('sessions/' + authData.auth.uid + '/posted')
+      var postedRef = dataRef.parent().child('sessions/' + authData.auth.uid + '/posted');
+      
       postedRef.once('value', function(snapshot){
-        if(snapshot.val() && snapshot.val().hasOwnProperty(messageId)){ //if Commenter is OP
-          authData.auth.baseId = 'OP'   //Todo: create OP image
-          authData.auth.hairId = 'OP'   //Todo: create OP image
+        //if Commenter is OP
+        if (snapshot.val() && snapshot.val().hasOwnProperty(messageId)) {
+          authData.auth.baseId = 'OP';   //Todo: create OP image
+          authData.auth.hairId = 'OP';   //Todo: create OP image
         }
-
-        comment.set({                   //Pushes the comment data into the post/message
+        
+        //Pushes the comment data into the post/message
+        comment.set({
           commentId : commentId,
           comment : commentMessage,
           timestamp : Firebase.ServerValue.TIMESTAMP,
           votes : 0,
           baseId: authData.auth.baseId,
-          hairId: authData.auth.hairId,
-        })
-
-      })
+          hairId: authData.auth.hairId
+        });
+      });
     }
   });
 }
@@ -199,26 +193,27 @@ var voteComment = exports.voteComment = function(request, response, dataRef){
   var token = request.cookies.get('token');
   var newToken;
   var newJwtClaims;
-  if(token){
-
+  
+  if (token) {
     dataRef.authWithCustomToken(token, function(error, authData) {
       if (error) {
         console.log("Login Failed!", error);
-      } else {
-        // console.log("Login Succeeded!", authData);
-        var messageId = request.body.messageId
+      } 
+      else {
+        var messageId = request.body.messageId;
         var commentId = request.body.commentId;
-        var voteRequest = request.body.vote; //Still waiting for what will the voting be.
-
-        var vote = dataRef.child(messageId + '/comments/' + commentId + '/votes');
+        var voteRequest = request.body.vote;
         
-        var fbRef = freshPost.parent()
+        var fbRef = freshPost.parent();
         var votedIdRef = fbRef.child('sessions/' + authData.auth.uid + '/voted/' + commentId);
         
+        var vote = dataRef.child(messageId + '/comments/' + commentId + '/votes');
+        
         votedIdRef.once('value', function(snapshot){
-          if(snapshot.val()){
+          if (snapshot.val()) {
             var value = snapshot.val();
-            if (value.type === "downvoted"){
+            
+            if (value.type === "downvoted") {
               vote.transaction(function (value){
                 if (voteRequest === true) {
                   votedIdRef.set(null);
@@ -234,31 +229,26 @@ var voteComment = exports.voteComment = function(request, response, dataRef){
                 }
               });
             }
-          } else {
+          } 
+          else {
             vote.transaction(function (value){
               if (voteRequest === true) {
-                votedIdRef.set({
-                  type : "upvoted"
-                });
+                votedIdRef.set({ type : "upvoted" });
                 return value + 1;
               }
               else {
-                votedIdRef.set({
-                  type : "downvoted"
-                });
+                votedIdRef.set({ type : "downvoted" });
                 return value - 1;
               }
             });
           }
-        })
+        });
 
         newJwtClaims = authData.auth;
-        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId);
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
 
         setTokenCookie(request, response, newToken);
-
       }
     });
   }
@@ -269,38 +259,33 @@ var toggleFavorite = exports.toggleFavorite = function(request, response, dataRe
   var token = request.cookies.get('token');
   var newToken;
   var newJwtClaims;
-  var removeFavorite = false
-  if(token){
-
+  
+  if (token) {
     dataRef.authWithCustomToken(token, function(error, authData) {
       if (error) {
         console.log("Login Failed!", error);
-      } else {
-        // console.log("Login Succeeded!", authData);
-        var messageId = request.body.messageId
+      } 
+      else {
+        var messageId = request.body.messageId;
 
-        var fbRef = dataRef.parent()
-        var favoritesIdRef = fbRef.child('sessions/' + authData.auth.uid + '/favorites/' + messageId)
+        var fbRef = dataRef.parent();
+        var favoritesIdRef = fbRef.child('sessions/' + authData.auth.uid + '/favorites/' + messageId);
 
         favoritesIdRef.once('value', function(snapshot){
-          if(snapshot.val()){
+          if (snapshot.val()) {
             favoritesIdRef.set(null);
-          } else{
-            console.log('set to TRUUUUUUUUUUUUUUUE')
-            favoritesIdRef.set({
-              type: 'true',
-            })
+          } 
+          else {
+            favoritesIdRef.set({ type: 'true' });
           }
-        })
+        });
 
         newJwtClaims = authData.auth;
-        console.log('original postemdMessagesId', newJwtClaims.postedMessagesId)
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
 
-        setTokenCookie(request, response, newToken)
+        setTokenCookie(request, response, newToken);
       }
     });
   }
 }
-
