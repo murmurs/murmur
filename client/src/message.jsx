@@ -118,7 +118,6 @@ var Message = React.createClass({
       this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].favorites && this.props.sessions[this.props.auth.uid].favorites.hasOwnProperty(this.props.messageId) ?
         {
           float: 'left',
-          marginLeft: '10px',
           marginRight: '10px',
           fontSize: '1.85em',
           color: '#F12938' // red if favorited
@@ -126,7 +125,6 @@ var Message = React.createClass({
         :
         {
           float: 'left',
-          marginLeft: '10px',
           marginRight: '10px',
           fontSize: '1.85em',
           color: '#fff1d3' // if NOT favorited
@@ -149,12 +147,12 @@ var Message = React.createClass({
           </div>
 
           <div className="col-xs-12" style={{paddingLeft:'10px'}}>
-            <div style = { styleFavorites }>
-              <span style={ {float: "right"} } onClick={ this.toggleFavorite }>
+            <div className="col-xs-1" style = { styleFavorites }>
+              <span style={ {float: "left"} } onClick={ this.toggleFavorite }>
                 <i className="glyphicon glyphicon-heart"></i>
               </span>
             </div>
-            <div style={ this.styles.timestamp }>
+            <div className="col-xs-2" style={ this.styles.timestamp }>
               <i className="glyphicon glyphicon-time" style={ this.styles.iconStyle }></i>
               <span style={{fontFamily:"Alegreya", fontStyle: "italic", fontSize: '.8em', position: 'relative', top: '-7px'}}>
                 { moment(this.props.timestamp).fromNow() }
