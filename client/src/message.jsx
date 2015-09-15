@@ -153,7 +153,7 @@ var Message = React.createClass({
                 <i className="glyphicon glyphicon-heart"></i>
               </span>
             </div>
-            <div className="col-xs-2" style={ this.styles.timestamp }>
+            <div className="col-xs-4" style={ this.styles.timestamp }>
               <i className="glyphicon glyphicon-time" style={ this.styles.iconStyle }></i>
               <span style={{fontFamily:"Alegreya", fontStyle: "italic", fontSize: '.8em', position: 'relative', top: '-7px'}}>
                 { moment(this.props.timestamp).fromNow() }
