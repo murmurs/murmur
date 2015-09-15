@@ -51,19 +51,19 @@ module.exports = React.createClass({
               <Face baseId={ this.props.baseId } hairId={ this.props.hairId } key={ this.props.commentId }/>
             </span>
             <span style={{float: "left"}}>
-              <p style={{fontFamily: 'Roboto', color: 'black', fontSize: '1em'}}>
+              <p style={{fontFamily: 'Alegreya', color: 'black', fontSize: '1em'}}>
                 { this.props.commentMessage }
               </p>
-              <span style={{fontStyle: "italic", fontSize: '.8em', float: "left"}}>
+              <span style={{fontFamily: 'Alegreya', fontStyle: "italic", fontSize: '.8em', float: "left"}}>
                 ({ moment(this.props.commentTimestamp).fromNow() })
               </span>
             </span>
           </div>
         </div>
         <div style={ this.styles.voteContainer }>
-          <img src="./src/img/glyphicons-601-chevron-up.png" style={ this.styles.arrows } alt="Up Vote" onClick={ this.upVote }/>
+          <i className="glyphicon glyphicon-chevron-up" style={{color: "#0000FF"}} onClick={ this.upVote }></i>
             <span className="count"  style={ this.styles.voteCount }> { this.props.commentVotes } </span>
-          <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
+          <i className="glyphicon glyphicon-chevron-down" style={{color: "#0000FF"}} onClick={ this.downVote }></i>
         </div>
       </div>
     )
@@ -77,7 +77,19 @@ module.exports = React.createClass({
     },
     votes: {
       float: "right",
-      fontSize: "19px"
+      fontSize: "19px",
+      textAlign: 'center'
+    },
+    voteContainer: {
+      width: "20px",
+      float: "right",
+      position: 'relative',
+      left: '-20px'
+    },
+    voteCount: {
+      margin: 'auto',
+      fontSize: '1em',
+      fontFamily: 'Alegreya'
     },
     writeButton: {
       float: "left",
@@ -90,14 +102,6 @@ module.exports = React.createClass({
     iconStyle: {
       marginLeft: "10px",
       marginRight: "10px",
-    },
-    voteContainer: {
-      width: "20px",
-      float: "right"
-    },
-    voteCount: {
-      margin: 'auto',
-      fontSize: '1.3em'
     }
   }
 });
