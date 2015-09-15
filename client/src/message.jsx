@@ -6,14 +6,17 @@ var CommentMessage = require('./commentMessage');
 var url = 'http://107.170.240.99:4000/';
 
 var Message = React.createClass({
+
   getInitialState: function() {
     return {
-      commentsView: 'false',
-    }
+      commentsView: false
+    };
   },
+
   toggleCommentsView: function(){
     this.setState({ commentsView: !this.state.commentsView })
   },
+
   // Post upvote data to Server
   upVote: function(event){
     var messageId = $(event.target).closest('.jumbotron').attr('id');
@@ -28,8 +31,9 @@ var Message = React.createClass({
       }),
       success: function(){
       }
-    })
+    });
   },
+
   // Post downvote data to Server
   downVote: function(event){
 
@@ -45,7 +49,7 @@ var Message = React.createClass({
       }),
       success: function(){
       }
-    })
+    });
   },
 
   toggleFavorite: function(event){
@@ -61,7 +65,7 @@ var Message = React.createClass({
       }),
       success: function(){
       }
-    })
+    });
   },
 
   componentDidMount: function () {
@@ -72,7 +76,9 @@ var Message = React.createClass({
         });
     });
   },
+
   render: function() {
+
     var commentRows = [];
     if(this.props.comments !== 'no comments'){
       for(commentKey in this.props.comments){
@@ -92,6 +98,7 @@ var Message = React.createClass({
         );
       }
     }
+
     var commentRowsSortedOptions = {
       recent: commentRows.slice().sort(function(a,b){
         return b.props.commentTimestamp - a.props.commentTimestamp;
@@ -104,47 +111,71 @@ var Message = React.createClass({
     var commentNumber = this.props.comments !== 'no comments' ?
       Object.keys(this.props.comments).length :
       'no ';
-
                     // 119{ commentNumber } comments
+
+    var styleFavorites =
+      // check if the 'uid' favorited the message
+      this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].favorites && this.props.sessions[this.props.auth.uid].favorites.hasOwnProperty(this.props.messageId) ?
+        {
+          float: 'left',
+          marginLeft: '10px',
+          marginRight: '10px',
+          fontSize: '1.85em',
+          color: '#F12938' // red if favorited
+        }
+        :
+        {
+          float: 'left',
+          marginLeft: '10px',
+          marginRight: '10px',
+          fontSize: '1.85em',
+          color: '#fff1d3' // if NOT favorited
+        }
+
     return (
       <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '0', paddingRight: '0', paddingTop: '15px', paddingBottom: '7px', backgroundColor: '#ECF0F5'}} >
         <div className="container">
           <div className="col-xs-10" style={{ marginBottom: '20px', paddingLeft:'10px', marginBottom: '0'}}>
-            <p style={{fontFamily: 'Roboto', color: 'chocolate', marginLeft: "10px", marginBottom: '0'}}>
+            <p style={{fontFamily: 'Alegreya', color: 'chocolate', marginLeft: "10px", marginBottom: '0'}}>
               { this.props.message }
             </p>
           </div>
           <div className="votes col-xs-2" style={ this.styles.votes }>
             <div style={ this.styles.voteContainer }>
-              <img src="./src/img/glyphicons-601-chevron-up.png" style={ this.styles.arrows } alt="Up Vote" onClick={ this.upVote }/>
-              <span className="count"  style={ this.styles.voteCount }> { this.props.votes } </span>
-              <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
+              <i className="glyphicon glyphicon-chevron-up" style={{color: "#0000FF"}} onClick={ this.upVote }></i>
+              <span className="count" style={{fontFamily: 'Alegreya'}}> { this.props.votes } </span>
+              <i className="glyphicon glyphicon-chevron-down" style={{color: "#0000FF"}} onClick={ this.downVote }></i>
             </div>
           </div>
+
           <div className="col-xs-12" style={{paddingLeft:'10px'}}>
+            <div style = { styleFavorites }>
+              <span style={ {float: "right"} } onClick={ this.toggleFavorite }>
+                <i className="glyphicon glyphicon-heart"></i>
+              </span>
+            </div>
             <div style={ this.styles.timestamp }>
-              <img style={ this.styles.iconStyle } src="./src/img/clock.png"/>
-              <span style={{fontStyle: "italic", fontSize: '.8em'}}>
+              <i className="glyphicon glyphicon-time" style={ this.styles.iconStyle }></i>
+              <span style={{fontFamily:"Alegreya", fontStyle: "italic", fontSize: '.8em', position: 'relative', top: '-7px'}}>
                 { moment(this.props.timestamp).fromNow() }
               </span>
             </div>
             <div style={ this.styles.comments }>
               <div className="commentViewToggle" onClick={ this.toggleCommentsView }>
-                <img style={ this.styles.iconStyle } src="./src/img/comments.png"/>
-                <span style={ {float: "right"} } onClick={ this.toggleFavorite }>
-                  Favorite
-                </span>
+                <i className="glyphicon glyphicon-comment" style={ this.styles.iconStyle }></i>
                 <span style={{fontStyle: "italic", fontSize: '.8em'}}>
-                  <span style={{fontWeight: 'bold', color: 'blue', fontSize: '1.1em'}}> { this.state.commentsView ? 'hide ' : 'show ' } </span>
-                    { commentNumber + ' comments'}
+                  <span style={{fontFamily:"Alegreya", fontWeight: 'bold', color: 'blue', fontSize: '1.1em', position: 'relative', top: '-7px'}}> { this.state.commentsView ? 'hide ' : 'show ' } </span>
+                  <span style={{fontFamily:"Alegreya", position: 'relative', top: '-7px'}}> { commentNumber + ' comments'} </span>
                 </span>
-              </div>
-              <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>
-                <CommentBox messageId={ this.props.messageId } token={ this.props.token } auth={ this.props.auth }/>
-                { commentRowsSortedOptions['recent'] }
               </div>
             </div>
           </div>
+
+          <div style={ this.state.commentsView ? this.styles.commentsView : this.styles.hidden }>
+            <CommentBox messageId={ this.props.messageId } token={ this.props.token } auth={ this.props.auth }/>
+            { commentRowsSortedOptions['recent'] }
+          </div>
+
         </div>
       </div>
     )
@@ -154,12 +185,12 @@ var Message = React.createClass({
     timestamp: {
       float: "left"
     },
-    votes: {
-      float: "right",
-      fontSize: "19px"
-    },
     comments: {
       float: "left"
+    },
+    votes: {
+      fontSize: "19px",
+      textAlign: 'center'
     },
     commentButton: {
       position: "relative",
@@ -169,20 +200,17 @@ var Message = React.createClass({
       width: "20px",
       float: "right"
     },
-    voteCount: {
-      margin: 'auto'
-    },
     iconStyle: {
-      marginLeft: "10px",
+      marginLeft: "20px",
       marginRight: "10px",
+      fontSize: '1.85em',
+      color: '#a8aeb8'
     },
     commentsView: {
       display: "block",
     },
     hidden: {
       display: "none",
-    },
-    arrows: {
     }
   }
 });
