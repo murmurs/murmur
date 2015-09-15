@@ -54,7 +54,7 @@ module.exports = React.createClass({
               <p style={{fontFamily: 'Alegreya', color: 'black', fontSize: '1em'}}>
                 { this.props.commentMessage }
               </p>
-              <span style={{fontStyle: "italic", fontSize: '.8em', float: "left"}}>
+              <span style={{fontFamily: 'Alegreya', fontStyle: "italic", fontSize: '.8em', float: "left"}}>
                 ({ moment(this.props.commentTimestamp).fromNow() })
               </span>
             </span>
