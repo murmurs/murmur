@@ -25,7 +25,8 @@
     "reactify": "^1.1.1",
     "uuid": "^2.0.1",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.4.0"
+    "watchify": "^3.4.0",
+    "request": "~2.61.0"
   },
   "devDependencies": {
     "chai": "3.2.0",

@@ -2,6 +2,7 @@ var Firebase = require('firebase');
 var myDataRef = new Firebase('https://fiery-heat-3376.firebaseio.com/');
 var tokenFactory = require('./firebaseTokenFactory').tokenFactory
 var Cookies = require('cookies');
+var httpRequest = require('request');
 
 var freshPost = myDataRef.child('Fresh Post');
 
@@ -14,8 +15,8 @@ var setTokenCookie = exports.setTokenCookie = function (request, response, token
       maxAge: 2628000000,   // expires in 1 month
       httpOnly: false,    // more secure but then can't access from client
     });
-
-    response.sendStatus(201)
+    response.send("MurMur'd");
+    //response.sendStatus(201)
 }
 
 var insertPost = exports.insertPost = function(request, response, dataRef){
@@ -54,13 +55,25 @@ var insertPost = exports.insertPost = function(request, response, dataRef){
         newJwtClaims.postedMessagesId = newJwtClaims.postedMessagesId + 1;
         newToken = tokenFactory(newJwtClaims);
         console.log(newJwtClaims.postedMessagesId);
-        // console.log('the new AUTH !!!!!!: ', newJwtClaims)
-        // console.log('the new token !!!!!!: ', newToken)
-        // var cookie = new Cookie(request, response)
-        // callback(request, response, { token: newToken, auth: newJwtClaims })
-        // console.log('Tooooooooooooooooooooooooken inside POOOST', newToken)
-        // console.log('AAAAAAAAAAAAAAAAAAAAAAAAUTH inside POOOST', newJwtClaims)
-        // console.log('AAAAAAAAAAAAAAAAAAAAAAAAUTH inside POOOST', response)
+
+        var url = 'https://mks22.slack.com/api/chat.postMessage'
+
+        slackMessage = {
+          token: 'xoxp-6711708658-6752831218-9166692273-ff23b3',
+          channel: '#mur_mur',
+          text: postMessage,
+          username: 'MurMur Bot'
+        }
+
+        httpRequest.post( url,
+          {
+            form: slackMessage
+          },
+          function(err, data){
+              console.log('Slack Message Posted');
+          } 
+        );
+
 
         setTokenCookie(request, response, newToken)
       }

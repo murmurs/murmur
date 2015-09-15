@@ -51,8 +51,7 @@ app.get('/', function(request, response){
 })
 
 app.post('/', function(request, response){ //request.body.url = 'newPost'
-
-  var data = ''
+  var data = '';
   request.on('data', function(chunk){
     data += chunk;
   });
@@ -77,7 +76,7 @@ app.post('/', function(request, response){ //request.body.url = 'newPost'
     console.log('SLAAAAAAAAACK', request.body);
     firebase.insertPost(request, response);
   })
-
+  firebase.insertPost(request,response);
 })
 
 app.post('/comment', function(request, response){ //request.body.url = 'newPost'
