@@ -127,7 +127,7 @@ var Message = React.createClass({
           float: 'left',
           marginRight: '10px',
           fontSize: '1.85em',
-          color: '#fff1d3' // if NOT favorited
+          color: 'rgb(255,241,211)' // if NOT favorited
         }
 
     return (
