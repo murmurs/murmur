@@ -92,10 +92,10 @@ var mainView = React.createClass({
         <div>
           <div style={this.styles.filter}>
             <div className="btn-group" style={{display: 'inline-block'}}>
-              <button className="btn btn-default" onClick={ this.handleSortRecent }> New </button>
-              <button className="btn btn-default" onClick={ this.handleSortPopular }> Hot </button>
-              <button className="btn btn-default" onClick={ this.handleFavorites }>Favorites</button>
-              <button className="btn btn-default" onClick={ this.handleMyPosts }>My Posts</button>
+              <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleSortRecent }> New </button>
+              <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleSortPopular }> Hot </button>
+              <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleFavorites }>Favorites</button>
+              <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleMyPosts }>My Posts</button>
             </div>
             <InputBox token={ this.state.token } auth={ this.state.auth }/>
           </div>

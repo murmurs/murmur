@@ -119,9 +119,8 @@ var Message = React.createClass({
         {
           float: 'left',
           marginLeft: '10px',
-          marginRight: '10px',
+          marginRight: '5px',
           fontSize: '1.85em',
-          background: '#ECF0F5',
           color: '#F12938' // red if favorited
         }
         :
@@ -130,23 +129,22 @@ var Message = React.createClass({
           marginLeft: '10px',
           marginRight: '10px',
           fontSize: '1.85em',
-          background: '#ECF0F5',
-          color: 'white' // if NOT favorited
+          color: '#fff1d3' // if NOT favorited
         }
 
     return (
       <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '0', paddingRight: '0', paddingTop: '15px', paddingBottom: '7px', backgroundColor: '#ECF0F5'}} >
         <div className="container">
           <div className="col-xs-10" style={{ marginBottom: '20px', paddingLeft:'10px', marginBottom: '0'}}>
-            <p style={{fontFamily: 'Roboto', color: 'chocolate', marginLeft: "10px", marginBottom: '0'}}>
+            <p style={{fontFamily: 'Alegreya', color: 'chocolate', marginLeft: "10px", marginBottom: '0'}}>
               { this.props.message }
             </p>
           </div>
           <div className="votes col-xs-2" style={ this.styles.votes }>
             <div style={ this.styles.voteContainer }>
-              <img src="./src/img/glyphicons-601-chevron-up.png" style={ this.styles.arrows } alt="Up Vote" onClick={ this.upVote }/>
-              <span className="count"  style={ this.styles.voteCount }> { this.props.votes } </span>
-              <img src="./src/img/glyphicons-602-chevron-down.png" style={ this.styles.arrows } alt="Down Vote" onClick={ this.downVote }/>
+              <i className="glyphicon glyphicon-chevron-up" style={{color: "#0000FF"}} onClick={ this.upVote }></i>
+              <span className="count" style={{fontFamily: 'Alegreya'}}> { this.props.votes } </span>
+              <i className="glyphicon glyphicon-chevron-down" style={{color: "#0000FF"}} onClick={ this.downVote }></i>
             </div>
           </div>
 
@@ -157,17 +155,17 @@ var Message = React.createClass({
               </span>
             </div>
             <div style={ this.styles.timestamp }>
-              <img style={ this.styles.iconStyle } src="./src/img/clock.png"/>
-              <span style={{fontStyle: "italic", fontSize: '.8em'}}>
+              <i className="glyphicon glyphicon-time" style={ this.styles.iconStyle }></i>
+              <span style={{fontFamily:"Alegreya", fontStyle: "italic", fontSize: '.8em', position: 'relative', top: '-7px'}}>
                 { moment(this.props.timestamp).fromNow() }
               </span>
             </div>
             <div style={ this.styles.comments }>
               <div className="commentViewToggle" onClick={ this.toggleCommentsView }>
-                <img style={ this.styles.iconStyle } src="./src/img/comments.png"/>
+                <i className="glyphicon glyphicon-comment" style={ this.styles.iconStyle }></i>
                 <span style={{fontStyle: "italic", fontSize: '.8em'}}>
-                  <span style={{fontWeight: 'bold', color: 'blue', fontSize: '1.1em'}}> { this.state.commentsView ? 'hide ' : 'show ' } </span>
-                    { commentNumber + ' comments'}
+                  <span style={{fontFamily:"Alegreya", fontWeight: 'bold', color: 'blue', fontSize: '1.1em', position: 'relative', top: '-7px'}}> { this.state.commentsView ? 'hide ' : 'show ' } </span>
+                  <span style={{fontFamily:"Alegreya", position: 'relative', top: '-7px'}}> { commentNumber + ' comments'} </span>
                 </span>
               </div>
             </div>
@@ -191,8 +189,8 @@ var Message = React.createClass({
       float: "left"
     },
     votes: {
-      float: "right",
-      fontSize: "19px"
+      fontSize: "19px",
+      textAlign: 'center'
     },
     commentButton: {
       position: "relative",
@@ -202,20 +200,17 @@ var Message = React.createClass({
       width: "20px",
       float: "right"
     },
-    voteCount: {
-      margin: 'auto'
-    },
     iconStyle: {
-      marginLeft: "10px",
+      marginLeft: "20px",
       marginRight: "10px",
+      fontSize: '1.85em',
+      color: '#a8aeb8'
     },
     commentsView: {
       display: "block",
     },
     hidden: {
       display: "none",
-    },
-    arrows: {
     }
   }
 });
