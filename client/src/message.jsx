@@ -119,7 +119,7 @@ var Message = React.createClass({
         {
           float: 'left',
           marginLeft: '10px',
-          marginRight: '5px',
+          marginRight: '10px',
           fontSize: '1.85em',
           color: '#F12938' // red if favorited
         }
