@@ -1,0 +1,34 @@
+{
+  "name": "murmur",
+  "version": "1.0.0",
+  "description": "",
+  "main": "murmurApp.js",
+  "dependencies": {
+    "express-jwt": "^3.1.0",
+    "jest-cli": "^0.5.1",
+    "react": "^0.13.3"
+  },
+  "devDependencies": {
+    "jest-cli": "^0.5.1",
+    "react-tools": "^0.13.3"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-nguyen/murmur.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a-nguyen/murmur/issues"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react"
+    ]
+  },
+  "homepage": "https://github.com/a-nguyen/murmur#readme"
+}
