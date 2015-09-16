@@ -3,6 +3,7 @@ var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
 var InputBox = require('./inputbox');
 var Firebase = require('firebase');
+var Map = require('./map');
 
 
 var getCookies = function(){
@@ -91,6 +92,7 @@ var mainView = React.createClass({
         <TopBar/>
         <div>
           <div style={this.styles.filter}>
+            <Map />
             <div className="btn-group" style={{display: 'inline-block'}}>
               <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleSortRecent }> New </button>
               <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleSortPopular }> Hot </button>

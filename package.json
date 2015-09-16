@@ -19,6 +19,7 @@
     "moment": "^2.10.6",
     "node-notifier": "^4.2.3",
     "react": "^0.13.3",
+    "react-gmaps": "^0.4.0",
     "react-router": "^0.13.3",
     "react-sanfona": "0.0.2",
     "react-style": "^0.5.5",
