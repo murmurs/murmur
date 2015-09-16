@@ -26,6 +26,6 @@ module.exports = React.createClass({
 
       return (
           <div className='map-gic'></div>
-          );
+        );
     }
 });
