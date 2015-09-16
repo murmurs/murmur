@@ -39,3 +39,28 @@ gulp.task('default', function() {
       },
     }));
 });
+
+gulp.task('test', function(){
+
+  var b = browserify({
+    entries:['./client/src/inputbox.jsx'],
+    transform: [reactify],
+    extensions: ['.jsx'],
+    debug: true,
+    cache: {},
+    packageCache: {},
+    fullPaths: true
+  });
+
+  function build(){
+    return b
+    .bundle()
+    .pipe(source('./__tests__/inputbox.js'))
+    .pipe(gulp.dest('./'))
+  };
+  
+  build();
+
+});
+
+
