@@ -1,5 +1,5 @@
 var Firebase = require('firebase');
-var myDataRef = new Firebase('https://fiery-heat-3376.firebaseio.com/');
+var myDataRef = new Firebase('https://resplendent-inferno-6476.firebaseio.com/');
 var tokenFactory = require('./firebaseTokenFactory').tokenFactory
 var Cookies = require('cookies');
 
