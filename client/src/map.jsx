@@ -10,7 +10,7 @@ module.exports = React.createClass({
             },
             map = new google.maps.Map(this.getDOMNode(), mapOptions);
 
-        var marker = new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), map: map, draggable: true, title: 'Where you are at'});
+        var marker = new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), map: map, title: "Where you're at"});
         var infowindow = new google.maps.InfoWindow({
             content: message
         });
