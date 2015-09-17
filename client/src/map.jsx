@@ -1,4 +1,4 @@
-  var React = require('react');
+var React = require('react');
 
 var message = "<p>Hi this is a message popUp</p>"
 
