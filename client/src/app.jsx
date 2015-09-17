@@ -2,6 +2,7 @@ var React = require('react');
 var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
 var InputBox = require('./inputbox');
+var LoginSignupModal = require('./loginSignupModal');
 var Firebase = require('firebase');
 var Map = require('./map');
 
@@ -90,6 +91,7 @@ var mainView = React.createClass({
     return (
       <div>
         <TopBar/>
+        <LoginSignupModal/>
         <div>
           <div style={this.styles.filter}>
             <Map />
@@ -103,6 +105,7 @@ var mainView = React.createClass({
           </div>
           <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages } sessions={ this.state.sessions }token={ this.state.token } auth={ this.state.auth }/>
         </div>
+
       </div>
     )
   },

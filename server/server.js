@@ -1,15 +1,45 @@
 var express = require('express');
-var firebase = require('./firebase');
-var tokenFactory = require('./firebaseTokenFactory').tokenFactory;
+
 var app = express();
 var bodyParser = require('body-parser');
-var Cookies = require("cookies");
 var serverUrl = '0.0.0.0';
+
+//hopefully these can be removed soon... 
+var Cookies = require("cookies");
+app.use(Cookies.express())
+var firebase = require('./firebase');
+var tokenFactory = require('./firebaseTokenFactory').tokenFactory;
+
+//MONGO BABY!
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/geoChat');
+var db = mongoose.connection;
+//verify connection.
+db.once('open', function callback () {
+  console.log('Conntected To Mongo Database');
+});
+
+var Schema = mongoose.Schema;
+var userSchema = new Schema({
+  username: String,
+  password: String
+});
+
+var user = mongoose.model('user', userSchema); //this is basically the users collection.
+
+var newUser = new user({username: "Dylan", password: "pw"});
+newUser.save(function(err, data) {
+  console.log("newUser data", data);
+});
+
+user.find(null, function(err, data){
+  console.log(">>>> " + data );
+});
 
 app.use('/murmur', express.static('../client'));
 app.use(bodyParser.json());
 
-app.use(Cookies.express())
+
 
 
 // this is no longer needed
@@ -57,6 +87,13 @@ app.get('/', function(request, response){
     request.method = 'get';
     response.send({redirect: '/murmur'});
   }
+});
+
+app.post('/signup', function(request, response){
+  var newUser = new user({username: request.body.username, password: request.body.password});
+  newUser.save(function(err, data){
+    response.send(data);
+  });
 });
 
 app.post('/', function(request, response){
