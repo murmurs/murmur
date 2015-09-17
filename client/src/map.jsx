@@ -1,31 +1,25 @@
 var React = require('react');
 
-module.exports = React.createClass({
-    // getDefaultProps: function () {
+var message = "<p>Hi this is a message popUp</p>"
 
-    //     return {
-    //         initialZoom: 6,
-    //         mapCenterLat: 53.5333,
-    //         mapCenterLng: -113.4073126
-    //     };
-    // },
-    // componentDidMount: function (rootNode) {
-    //     var mapOptions = {
-    //             center: new google.maps.LatLng(this.props.mapCenterLat, this.props.mapCenterLng),
-    //             zoom: this.props.initialZoom
-    //         },
-    //         map = new google.maps.Map(this.getDOMNode(), mapOptions);
-    //     var marker = new google.maps.Marker({position: new google.maps.LatLng(this.props.mapCenterLat, this.props.mapCenterLng), title: 'Hi', map: map});
-    //     this.setState({map: map});
-    // },
+module.exports = React.createClass({
     showMap: function(position){
         var mapOptions = {
                 center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                zoom: 6
+                zoom: 4
             },
             map = new google.maps.Map(this.getDOMNode(), mapOptions);
-        var marker = new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), title: 'Hi', map: map});
-        this.setState({map: map});
+
+        var marker = new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), map: map, title: "Where you're at"});
+        var infowindow = new google.maps.InfoWindow({
+            content: message
+        });
+
+        marker.addListener('click', function(){
+            infowindow.open(map, marker);
+        });
+        
+        var newMarker = new google.maps.Marker({position: new google.maps.LatLng(43.707594, -75.410156), title: 'Hi', map: map, icon: {path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW, scale: 4}});
     },
     getLocation: function(){
         if(navigator.geolocation){
@@ -45,7 +39,21 @@ module.exports = React.createClass({
     }
 });
 
-// function showPosition(position) {
-//     x.innerHTML = "Latitude: " + position.coords.latitude + 
-//     "<br>Longitude: " + position.coords.longitude;  
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 4,
+//     center: {lat: -25.363882, lng: 131.044922 }
+//   });
+
+//   map.addListener('click', function(e) {
+//     placeMarkerAndPanTo(e.latLng, map);
+//   });
+// }
+
+// function placeMarkerAndPanTo(latLng, map) {
+//   var marker = new google.maps.Marker({
+//     position: latLng,
+//     map: map
+//   });
+//   map.panTo(latLng);
 // }
