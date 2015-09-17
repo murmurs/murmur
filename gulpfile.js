@@ -28,19 +28,11 @@ gulp.task('default', function() {
   build();
   bundler.on('update', build);
 
-  gulp.src('./client')
-    .pipe(server({
-      port: 8080,
-      livereload: {
-        enable: true,
-        filter: function(filePath, cb) {
-          cb( /main.js/.test(filePath) );
-        }
-      },
-    }));
+
+
 });
 
-gulp.task('test', function(){
+gulp.task('test_build', function(){
 
   var b = browserify({
     entries:['./client/src/inputbox.jsx'],
@@ -55,12 +47,13 @@ gulp.task('test', function(){
   function build(){
     return b
     .bundle()
-    .pipe(source('./__tests__/inputbox.js'))
+    .pipe(source('./test_builds/inputbox.js'))
     .pipe(gulp.dest('./'))
   };
   
   build();
 
 });
+
 
 
