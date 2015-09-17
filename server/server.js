@@ -24,10 +24,10 @@ var userSchema = new Schema({
   username: String,
   password: String
 });
-var postSchema = new Schema({
+var messageSchema = new Schema({
   userId: String,
   username: String,
-  post: String
+  message: String
 });
 
 
@@ -65,15 +65,15 @@ app.post('/signup', function(request, response){
   });
 });
 
-var post = mongoose.model('post', postSchema);
+var message = mongoose.model('message', messageSchema);
 
-app.post('/insertPost', function(request, response) {
-  var newPost = new post({
+app.post('/insertMessage', function(request, response) {
+  var newMessage = new message({
     userId: request.body.userId, //this should come from the session.
     username: request.body.username,  //this should come from the session.
-    post: request.body.post
+    message: request.body.message
   });
-  newPost.save(function(err, data){
+  newMessage.save(function(err, data){
     response.send(data);
   });
 });
