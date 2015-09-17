@@ -1,4 +1,4 @@
-var React = require('react');
+  var React = require('react');
 
 module.exports = React.createClass({
     // getDefaultProps: function () {
@@ -24,7 +24,8 @@ module.exports = React.createClass({
                 zoom: 6
             },
             map = new google.maps.Map(this.getDOMNode(), mapOptions);
-        var marker = new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), title: 'Hi', map: map});
+        new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), map: map, draggable: true});
+        new google.maps.Marker({position: new google.maps.LatLng(43.707594, -75.410156), title: 'Hi', map: map, icon: {path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW, scale: 4}});
         this.setState({map: map});
     },
     getLocation: function(){
