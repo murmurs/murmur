@@ -69,8 +69,8 @@ var post = mongoose.model('post', postSchema);
 
 app.post('/insertPost', function(request, response) {
   var newPost = new post({
-    userId: request.body.userId, 
-    username: request.body.username, 
+    userId: request.body.userId, //this should come from the session.
+    username: request.body.username,  //this should come from the session.
     post: request.body.post
   });
   newPost.save(function(err, data){
