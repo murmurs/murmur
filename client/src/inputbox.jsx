@@ -2,7 +2,7 @@ var React = require('react');
 var url = 'http://0.0.0.0:3000/';
 
 var InputBox = React.createClass({
-
+  
   handleSubmit: function(event) {
     event.preventDefault(); //prevent the form from actually submitting.
     $.ajax({
