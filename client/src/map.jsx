@@ -8,7 +8,7 @@ module.exports = React.createClass({
 
         var mapOptions = {
                 center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                zoom: 4
+                zoom: 8
             },
             map = new google.maps.Map(this.getDOMNode(), mapOptions);
 
@@ -22,9 +22,16 @@ module.exports = React.createClass({
         var infowindow = new google.maps.InfoWindow({
             content: message
         });
-        
+
         marker.addListener('click', function(){
+            map.setZoom(15);
+            map.setCenter(marker.getPosition());
+        });
+        marker.addListener('mouseover', function(){
             infowindow.open(map, marker);
+        });
+        marker.addListener('mouseout', function(){
+            infowindow.close(map, marker);
         });
 
         var newMarker = new google.maps.Marker({
