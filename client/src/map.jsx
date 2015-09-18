@@ -4,6 +4,9 @@ var message = "<p>Hi this is a message popUp</p>"
 
 module.exports = React.createClass({
     showMap: function(position){
+        localStorage.setItem('Latitude', position.coords.latitude);
+        localStorage.setItem('longitude', position.coords.longitude);
+        console.log(localStorage);
         var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/'; 
 
         var mapOptions = {
@@ -35,9 +38,9 @@ module.exports = React.createClass({
         });
 
         var newMarker = new google.maps.Marker({
-            position: new google.maps.LatLng(43.707594, -75.410156), 
+            position: new google.maps.LatLng(37.77493, -122.41942), 
             map: map, 
-            icon: new google.maps.MarkerImage(iconBase + 'info.png', null, null, null, new google.maps.Size(40, 40))
+            icon: new google.maps.MarkerImage("http://icons.iconarchive.com/icons/custom-icon-design/mono-general-1/512/chat-icon.png", null, null, null, new google.maps.Size(40, 40))
         });
     },
     getLocation: function(){
