@@ -47,7 +47,6 @@ app.get('/', function(request, response){
 });
 
 app.post('/signup', function(request, response){
-  // window.sessionStorage.username = "test";
   request.session.username = request.body.username;
   request.session.password = request.body.password;
   console.log(request.session.username, request.session.password);
@@ -56,8 +55,6 @@ app.post('/signup', function(request, response){
 app.post('/login', function(request, response){
   request.session.username = request.body.username;
   request.session.password = request.body.password;
-  // console.log(request.session.username, request.session.password);
-  // window.sessionStorage.username = request.body.username;
 });
 
 //the token needs to be set in order to access firebase.
