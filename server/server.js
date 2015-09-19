@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 
 var app = express();
 var bodyParser = require('body-parser');
@@ -35,7 +36,6 @@ app.use('/murmur', express.static('../client'));
 app.use(bodyParser.json());
 
 //express session support
-var session = require('express-session');
 app.use(session({
   secret: 'geo chat gee baller',
   resave: false,
@@ -47,9 +47,17 @@ app.get('/', function(request, response){
 });
 
 app.post('/signup', function(request, response){
+  // window.sessionStorage.username = "test";
   request.session.username = request.body.username;
   request.session.password = request.body.password;
   console.log(request.session.username, request.session.password);
+});
+
+app.post('/login', function(request, response){
+  request.session.username = request.body.username;
+  request.session.password = request.body.password;
+  // console.log(request.session.username, request.session.password);
+  // window.sessionStorage.username = request.body.username;
 });
 
 //the token needs to be set in order to access firebase.
@@ -84,15 +92,17 @@ app.post('/signup', function(request, response){
 
 var post = mongoose.model('post', postSchema);
 
-app.post('/insertPost', function(request, response) {
+app.post('/insertMessage', function(request, response) {
   var newPost = new post({
     userId: request.body.userId, //this should come from the session.
     username: request.body.username,  //this should come from the session.
     post: request.body.post
   });
   newPost.save(function(err, data){
+    console.log(data._id)
     response.send(data);
   });
+  // response.send(request.session.username);
 });
 
 app.post('/', function(request, response){

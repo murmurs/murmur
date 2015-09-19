@@ -67,16 +67,34 @@ var LoginSignupModal = React.createClass({
     };
   },
 
+  userLogin: function(event){
+    event.preventDefault();
+    console.log("user login button clicked!", this.state.username, this.state.password);
+    window.sessionStorage.username = this.state.username;
 
+    $.ajax({
+      type: 'POST',
+      url: url + 'login',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        'username': this.state.username,
+        'password': this.state.password
+      }),
+      success: function(data){
+        console.log('Post successful', data);
+      }
+    });
+    $('#myModal').modal('hide');
+  },
 
   newSignup: function(event){
     event.preventDefault();
     console.log("button clicked!", this.state.username, this.state.password);
-    $('#myModal').modal('hide');
+    window.sessionStorage.username = this.state.username;
 
     $.ajax({
       type: 'POST',
-      url: url +'signup',
+      url: url + 'signup',
       contentType: 'application/json',
       data: JSON.stringify({
         "username": this.state.username,
@@ -86,6 +104,8 @@ var LoginSignupModal = React.createClass({
         console.log('Post Successful', data);
       }
     });
+
+    $('#myModal').modal('hide');
   },
 
   handleUsername: function(event){
@@ -112,9 +132,9 @@ var LoginSignupModal = React.createClass({
             </div>
             <div className="modal-body">
               <form>
-                <input placeholder="Username" type="text" />
-                <input placeholder="Password" type="text" />
-                <button>Login!</button>
+                <input placeholder="Username" type="text" onChange={this.handleUsername}/>
+                <input placeholder="Password" type="text" onChange={this.handlePassword}/>
+                <button onClick={this.userLogin}>Login!</button>
               </form>
             </div>
             <div className="modal-header">
@@ -124,7 +144,7 @@ var LoginSignupModal = React.createClass({
               <form>
                 <input placeholder="Username" type="text" onChange={this.handleUsername}></input>
                 <input placeholder="Password" type="text" onChange={this.handlePassword}></input>
-                <button id='signupButton' onClick={this.newSignup}>Signup!</button>
+                <button onClick={this.newSignup}>Signup!</button>
               </form>
             </div>
             <div className="modal-footer">
