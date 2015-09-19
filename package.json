@@ -9,6 +9,7 @@
     "cookies": "^0.5.0",
     "express": "^4.13.3",
     "express-jwt": "^3.1.0",
+    "express-session": "^1.11.3",
     "firebase": "^2.2.9",
     "firebase-token-generator": "^2.0.0",
     "gulp": "^3.9.0",
@@ -46,7 +47,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start":"sudo NODE_ENV=production nodejs server/server.js"
+    "start": "sudo NODE_ENV=production nodejs server/server.js"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
