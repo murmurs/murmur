@@ -92,13 +92,13 @@ var ViewAllMessages = React.createClass({
     //     return b.props.votes - a.props.votes;
     //   })
 
-      myPosts: messageRows.filter(function(message){
-        if(this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].posted){
-          return this.props.sessions[this.props.auth.uid].posted.hasOwnProperty(message.props.messageId);
-        }
-        return false;
-      }.bind(this)),
-    }
+    //   myPosts: messageRows.filter(function(message){
+    //     if(this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].posted){
+    //       return this.props.sessions[this.props.auth.uid].posted.hasOwnProperty(message.props.messageId);
+    //     }
+    //     return false;
+    //   }.bind(this))
+    // };
     //   //favorites will be much easier once we have usernames.
     //   // favorites: messageRows.filter(function(message){
     //   //   if(this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].favorites){
@@ -116,7 +116,7 @@ var ViewAllMessages = React.createClass({
     //   //   }
     //   //   return false;
     //   // }.bind(this)),
-    // };
+     };
 
     return (
       <div style={ this.styles.messageRows }>        

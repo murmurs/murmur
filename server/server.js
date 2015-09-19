@@ -92,7 +92,7 @@ app.post('/signup', function(request, response){
   });
 });
 
-var post = mongoose.model('message', messageSchema);
+var message = mongoose.model('message', messageSchema);
 
 
 app.post('/message', function(request, response) {
