@@ -25,10 +25,15 @@ var userSchema = new Schema({
   username: String,
   password: String
 });
-var postSchema = new Schema({
+var messageSchema = new Schema({
   userId: String,
   username: String,
-  post: String
+  message: String,
+  votes: Number,
+  voters: [], //voters holds an array of userIds to record who has voted on this message.
+  comments: [], //holds array of comments submitted on each message.
+  favorites: [], //holds a list of userIds that have favorited this message.
+  timestamp: {type: Date, default: Date.now}
 });
 
 
@@ -87,13 +92,18 @@ app.post('/signup', function(request, response){
   });
 });
 
-var post = mongoose.model('post', postSchema);
+var message = mongoose.model('message', messageSchema);
 
-app.post('/insertMessage', function(request, response) {
-  var newPost = new post({
+
+app.post('/message', function(request, response) {
+  var newMessage = new message({
     userId: request.body.userId, //this should come from the session.
     username: request.body.username,  //this should come from the session.
-    post: request.body.post
+    message: request.body.message,
+    votes: 0,
+    voters : [], //voters holds an array of userIds to record who has voted on this message.
+    comments : [], //holds array of comments submitted on each message.
+    favorites : [] //holds a list of userIds that have favorited this message.
   });
   newPost.save(function(err, data){
     console.log(data._id)
@@ -102,8 +112,11 @@ app.post('/insertMessage', function(request, response) {
   // response.send(request.session.username);
 });
 
-app.post('/', function(request, response){
-  firebase.insertPost(request, response);
+//fetch all messages from the server.
+app.get('/message', function(request, response) {
+  message.find({}, function(err, messages) {
+    response.send(JSON.stringify(messages));
+  });
 });
 
 app.post('/comment', function(request, response){
