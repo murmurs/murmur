@@ -18,39 +18,57 @@ db.once('open', function callback () {
   console.log('Conntected To Mongo Database');
 });
 
+
 var Schema = mongoose.Schema;
 var userSchema = new Schema({
   username: String,
   password: String
 });
-var messageSchema = new Schema({
+var postSchema = new Schema({
   userId: String,
   username: String,
-  message: String
+  post: String
 });
 
 
 app.use('/murmur', express.static('../client'));
 app.use(bodyParser.json());
 
+//express session support
+var session = require('express-session');
+app.use(session({
+  secret: 'geo chat gee baller',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.get('/', function(request, response){
+  response.redirect('murmur');
+});
+
+app.post('/signup', function(request, response){
+  request.session.username = request.body.username;
+  request.session.password = request.body.password;
+  console.log(request.session.username, request.session.password);
+});
 
 //the token needs to be set in order to access firebase.
 //this is a crappy function that should be taken out or replaced by something useful.
-app.get('/', function(request, response){
-  if(request.cookies.get('token')){
-    console.log('already have a token')
-    request.method = 'get';
-    response.redirect('/murmur');
-    //response.send({redirect: '/murmur'});
-  } else {  // set Token Cookie
-    response.cookies.set('token', tokenFactory(), {
-      maxAge: 2628000000,   // expires in 1 month
-      httpOnly: false,    // more secure but then can't access from client
-    })
-    request.method = 'get';
-    response.send({redirect: '/murmur'});
-  }
-});
+// app.get('/', function(request, response){
+//   if(request.cookies.get('token')){
+//     console.log('already have a token')
+//     request.method = 'get';
+//     response.redirect('/murmur');
+//     //response.send({redirect: '/murmur'});
+//   } else {  // set Token Cookie
+//     response.cookies.set('token', tokenFactory(), {
+//       maxAge: 2628000000,   // expires in 1 month
+//       httpOnly: false,    // more secure but then can't access from client
+//     })
+//     request.method = 'get';
+//     response.send({redirect: '/murmur'});
+//   }
+// });
 
 var user = mongoose.model('user', userSchema); //this is basically the users collection.
 
@@ -64,15 +82,15 @@ app.post('/signup', function(request, response){
   });
 });
 
-var message = mongoose.model('message', messageSchema);
+var post = mongoose.model('post', postSchema);
 
-app.post('/insertMessage', function(request, response) {
-  var newMessage = new message({
+app.post('/insertPost', function(request, response) {
+  var newPost = new post({
     userId: request.body.userId, //this should come from the session.
     username: request.body.username,  //this should come from the session.
-    message: request.body.message
+    post: request.body.post
   });
-  newMessage.save(function(err, data){
+  newPost.save(function(err, data){
     response.send(data);
   });
 });

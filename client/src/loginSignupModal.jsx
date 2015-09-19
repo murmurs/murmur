@@ -72,6 +72,7 @@ var LoginSignupModal = React.createClass({
   newSignup: function(event){
     event.preventDefault();
     console.log("button clicked!", this.state.username, this.state.password);
+    $('#myModal').modal('hide');
 
     $.ajax({
       type: 'POST',
@@ -84,7 +85,7 @@ var LoginSignupModal = React.createClass({
       success: function(data) {
         console.log('Post Successful', data);
       }
-    })
+    });
   },
 
   handleUsername: function(event){
@@ -123,7 +124,7 @@ var LoginSignupModal = React.createClass({
               <form>
                 <input placeholder="Username" type="text" onChange={this.handleUsername}></input>
                 <input placeholder="Password" type="text" onChange={this.handlePassword}></input>
-                <button onClick={this.newSignup}>Signup!</button>
+                <button id='signupButton' onClick={this.newSignup}>Signup!</button>
               </form>
             </div>
             <div className="modal-footer">
