@@ -78,9 +78,9 @@ var Message = React.createClass({
   },
 
   render: function() {
-
     var commentRows = [];
-    if(this.props.comments !== 'no comments'){
+    console.log(this.props);
+    if(this.props.comments.length !== 0){
       for(commentKey in this.props.comments){
         var comments = this.props.comments[commentKey];
         commentRows.push(
@@ -108,28 +108,26 @@ var Message = React.createClass({
       }),
     }
 
-    var commentNumber = this.props.comments !== 'no comments' ?
-      Object.keys(this.props.comments).length :
-      'no ';
+    var commentNumber = this.props.comments.length;
                     // 119{ commentNumber } comments
 
-    var styleFavorites =
-      // check if the 'uid' favorited the message
-      this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].favorites && this.props.sessions[this.props.auth.uid].favorites.hasOwnProperty(this.props.messageId) ?
-        {
-          float: 'left',
-          marginRight: '10px',
-          fontSize: '1.85em',
-          color: '#F12938' // red if favorited
-        }
-        :
-        {
-          float: 'left',
-          marginRight: '10px',
-          fontSize: '1.85em',
-          color: '#a8aeb8', // if NOT favorited
-          borderColor: 'green'
-        }
+    // var styleFavorites =
+    //   // check if the 'uid' favorited the message
+    //   this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].favorites && this.props.sessions[this.props.auth.uid].favorites.hasOwnProperty(this.props.messageId) ?
+    //     {
+    //       float: 'left',
+    //       marginRight: '10px',
+    //       fontSize: '1.85em',
+    //       color: '#F12938' // red if favorited
+    //     }
+    //     :
+    //     {
+    //       float: 'left',
+    //       marginRight: '10px',
+    //       fontSize: '1.85em',
+    //       color: '#a8aeb8', // if NOT favorited
+    //       borderColor: 'green'
+    //     }
 
     return (
       <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '0', paddingRight: '0', paddingTop: '15px', paddingBottom: '7px', backgroundColor: '#ECF0F5'}} >
@@ -148,7 +146,7 @@ var Message = React.createClass({
           </div>
 
           <div className="col-xs-12" style={{paddingLeft:'10px'}}>
-            <div className="col-xs-1" style = { styleFavorites }>
+            <div className="col-xs-1">
               <span style={ {float: "left"} } onClick={ this.toggleFavorite }>
                 <i className="glyphicon glyphicon-heart"></i>
               </span>
@@ -174,6 +172,7 @@ var Message = React.createClass({
             <CommentBox messageId={ this.props.messageId } token={ this.props.token } auth={ this.props.auth }/>
             { commentRowsSortedOptions['recent'] }
           </div>
+
 
         </div>
       </div>

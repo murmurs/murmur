@@ -10,7 +10,7 @@ var InputBox = React.createClass({
     event.preventDefault(); //prevent the form from actually submitting.
     $.ajax({
       type: 'POST',
-      url: url + "insertMessage",
+      url: url + "message",
       contentType: 'application/json',
       data: JSON.stringify({
         //maybe the userId and username are set on the server side..

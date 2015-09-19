@@ -36,41 +36,41 @@ var mainView = React.createClass({
   },
 
   // Retrieve the messages data from Firebase
-  componentWillMount: function(){
-    if(token){
-      var context = this;
-      this.firebaseRef = new Firebase('https://resplendent-inferno-6476.firebaseio.com/');
-      this.firebaseRef.authWithCustomToken(token, function(error, authData){
-        if(error){
-          console.log('Problem connecting to Database', error)
-        } else{
-          console.log('Connected to Databse')
-          context.setState({
-            token: authData.token,
-            auth: authData.auth,
-          });
-        }
-      })
-      this.messageRef = this.firebaseRef.child('Fresh Post');
-      this.messageRef.on('value', function(dataSnapshot){
-        this.messages.push(dataSnapshot.val());
-        this.setState({
-          messages: dataSnapshot.val()
-        });
-        console.log('inFreshPost', dataSnapshot.val())
-      }.bind(this));
+  // componentWillMount: function(){
+  //   if(token){
+  //     var context = this;
+  //     this.firebaseRef = new Firebase('https://resplendent-inferno-6476.firebaseio.com/');
+  //     this.firebaseRef.authWithCustomToken(token, function(error, authData){
+  //       if(error){
+  //         console.log('Problem connecting to Database', error)
+  //       } else {
+  //         console.log('Connected to Databse')
+  //         context.setState({
+  //           token: authData.token,
+  //           auth: authData.auth,
+  //         });
+  //       }
+  //     })
+  //     this.messageRef = this.firebaseRef.child('Fresh Post');
+  //     this.messageRef.on('value', function(dataSnapshot){
+  //       this.messages.push(dataSnapshot.val());
+  //       this.setState({
+  //         messages: dataSnapshot.val()
+  //       });
+  //       console.log('inFreshPost', dataSnapshot.val())
+  //     }.bind(this));
 
-      this.sessionsRef = this.firebaseRef.child('sessions');
-      this.sessionsRef.on('value', function(dataSnapshot){
-        this.messages.push(dataSnapshot.val());
-        this.setState({
-          sessions: dataSnapshot.val()
-        });
-      // console.log('SESSSSSSSSSSSSSSSSionREF', this.sessionRef.toString())
-        console.log('inSession', dataSnapshot.val())
-      }.bind(this));
-    }
-  },
+  //     this.sessionsRef = this.firebaseRef.child('sessions');
+  //     this.sessionsRef.on('value', function(dataSnapshot){
+  //       this.messages.push(dataSnapshot.val());
+  //       this.setState({
+  //         sessions: dataSnapshot.val()
+  //       });
+  //     // console.log('SESSSSSSSSSSSSSSSSionREF', this.sessionRef.toString())
+  //       console.log('inSession', dataSnapshot.val())
+  //     }.bind(this));
+  //   }
+  // },
 
   handleSortRecent: function(){
     this.setState({sort: 'recent'});
@@ -113,7 +113,7 @@ var mainView = React.createClass({
             </div>
             <InputBox style={this.styles.style} token={ this.state.token } auth={ this.state.auth }/>
           </div>
-          <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages } sessions={ this.state.sessions }token={ this.state.token } auth={ this.state.auth }/>
+          <ViewAllMessages/>
         </div>
 
       </div>

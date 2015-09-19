@@ -20,7 +20,7 @@ var setTokenCookie = exports.setTokenCookie = function (request, response, token
   response.sendStatus(201);
 }
 
-var insertPost = exports.insertPost = function(request, response, dataRef){
+var insertPost = exports.insertPost = function(request, response, dataRef) {
   var dataRef = dataRef || freshPost;
   var token = request.cookies.get('token') || request.body.token; // body.token is for Slack
   var newToken;
