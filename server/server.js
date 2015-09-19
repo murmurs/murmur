@@ -105,7 +105,7 @@ app.post('/message', function(request, response) {
     comments : [], //holds array of comments submitted on each message.
     favorites : [] //holds a list of userIds that have favorited this message.
   });
-  newPost.save(function(err, data){
+  newMessage.save(function(err, data){
     console.log(data._id)
     response.send(data);
   });
