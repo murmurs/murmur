@@ -8,8 +8,6 @@ var port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 //hopefully these can be removed soon... 
 var Cookies = require("cookies");
 app.use(Cookies.express())
-// var firebase = require('./firebase');
-// var tokenFactory = require('./firebaseTokenFactory').tokenFactory;
 
 //MONGO BABY!
 var mongoose = require('mongoose');

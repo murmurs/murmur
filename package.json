@@ -36,8 +36,6 @@
     "firebase": "2.2.9",
     "gulp-connect": "^2.2.0",
     "gulp-replace": "^0.5.4",
-    "gulp-scp": "0.0.3",
-    "gulp-scp2": "^0.2.0",
     "gulp-sftp": "^0.1.5",
     "gulp-shell": "^0.4.3",
     "jest-cli": "^0.5.2",
