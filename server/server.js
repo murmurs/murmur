@@ -47,17 +47,17 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.get('/', function(request, response){
+app.get('/', function (request, response){
   response.redirect('murmur');
 });
 
-app.post('/signup', function(request, response){
+app.post('/signup', function (request, response){
   request.session.username = request.body.username;
   request.session.password = request.body.password;
   console.log(request.session.username, request.session.password);
 });
 
-app.post('/login', function(request, response){
+app.post('/login', function (request, response){
   request.session.username = request.body.username;
   request.session.password = request.body.password;
 });
@@ -82,7 +82,7 @@ app.post('/login', function(request, response){
 
 var user = mongoose.model('user', userSchema); //this is basically the users collection.
 
-app.post('/signup', function(request, response){
+app.post('/signup', function (request, response){
   var newUser = new user({
     username: request.body.username, 
     password: request.body.password
@@ -95,7 +95,7 @@ app.post('/signup', function(request, response){
 var message = mongoose.model('message', messageSchema);
 
 
-app.post('/message', function(request, response) {
+app.post('/message', function (request, response) {
   var newMessage = new message({
     userId: request.body.userId, //this should come from the session.
     username: request.body.username,  //this should come from the session.
@@ -105,7 +105,7 @@ app.post('/message', function(request, response) {
     comments : [], //holds array of comments submitted on each message.
     favorites : [] //holds a list of userIds that have favorited this message.
   });
-  newMessage.save(function(err, data){
+  newMessage.save(function (err, data){
     console.log(data._id)
     response.send(data);
   });
@@ -113,26 +113,31 @@ app.post('/message', function(request, response) {
 });
 
 //fetch all messages from the server.
-app.get('/message', function(request, response) {
-  message.find({}, function(err, messages) {
+app.get('/message', function (request, response) {
+  message.find({}, function (err, messages) {
     response.send(JSON.stringify(messages));
   });
 });
 
-app.post('/comment', function(request, response){
+app.post('/comment', function (request, response){
   firebase.comment(request, response);
 });
 
-app.post('/vote', function(request,response){
+app.post('/vote', function (request,response){
   firebase.votePost(request, response);
 });
 
-app.post('/voteComment', function(request,response){
+app.post('/voteComment', function (request,response){
   firebase.voteComment(request, response);
 });
 
 app.post('/favorite', function(request,response){
-  firebase.toggleFavorite(request, response);
+  message.findOne({_id: request.body.messageId}, function (err, targetMessage) {
+    targetMessage.favorites = request.body.favorites;
+    targetMessage.save(function (err, data) {
+      response.send(data);
+    })
+  });
 });
 
 app.listen(port, serverUrl);
