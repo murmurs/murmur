@@ -2,7 +2,8 @@ var express = require('express');
 
 var app = express();
 var bodyParser = require('body-parser');
-var serverUrl = '0.0.0.0';
+var serverUrl = process.env.NODE_ENV === 'production' ? '107.170.218.14' : '0.0.0.0';
+var port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
 //hopefully these can be removed soon... 
 var Cookies = require("cookies");
@@ -98,5 +99,5 @@ app.post('/favorite', function(request,response){
   firebase.toggleFavorite(request, response);
 });
 
-app.listen(3000, serverUrl);
+app.listen(port, serverUrl);
 
