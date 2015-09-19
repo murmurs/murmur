@@ -53,17 +53,26 @@ var Message = React.createClass({
   },
 
   toggleFavorite: function(event){
-
-    var messageId = $(event.target).closest('.jumbotron').attr('id');
+    console.log("togged fav!");
+    var favs = this.props.favorites; //favorites is a object of objects with userIds as keys and true/false as values.    
+    var favLocation = favs.indexOf(window.sessionStorage.userId);
+    if (favLocation !== -1){
+      favs.splice(favLocation, 1);
+    }
+    else {
+      favs.push(window.sessionStorage.userId);
+      console.log(favs);
+    }
     $.ajax({
       type: 'POST',
       url: url + 'favorite' ,
       contentType: 'application/json',
       data: JSON.stringify({
-        "messageId": messageId,
-        "token": this.props.token
+        "messageId": this.props.messageId,
+        "favorites": favs,
       }),
-      success: function(){
+      success: function(err, data){
+        console.log(data);
       }
     });
   },
@@ -79,7 +88,6 @@ var Message = React.createClass({
 
   render: function() {
     var commentRows = [];
-    console.log(this.props);
     if(this.props.comments.length !== 0){
       for(commentKey in this.props.comments){
         var comments = this.props.comments[commentKey];
@@ -111,23 +119,25 @@ var Message = React.createClass({
     var commentNumber = this.props.comments.length;
                     // 119{ commentNumber } comments
 
-    // var styleFavorites =
-    //   // check if the 'uid' favorited the message
-    //   this.props.sessions[this.props.auth.uid] && this.props.sessions[this.props.auth.uid].favorites && this.props.sessions[this.props.auth.uid].favorites.hasOwnProperty(this.props.messageId) ?
-    //     {
-    //       float: 'left',
-    //       marginRight: '10px',
-    //       fontSize: '1.85em',
-    //       color: '#F12938' // red if favorited
-    //     }
-    //     :
-    //     {
-    //       float: 'left',
-    //       marginRight: '10px',
-    //       fontSize: '1.85em',
-    //       color: '#a8aeb8', // if NOT favorited
-    //       borderColor: 'green'
-    //     }
+    var styleFavorites =
+      // check if the 'uid' favorited the message
+      this.props.favorites.indexOf(window.sessionStorage.userId) === -1 ?
+        {
+          float: 'left',
+          marginRight: '10px',
+          fontSize: '1.85em',
+          color: '#a8aeb8', // if NOT favorited
+          borderColor: 'green',
+          cursor: "pointer"
+        }
+        :
+        {
+          float: 'left',
+          marginRight: '10px',
+          fontSize: '1.85em',
+          color: '#F12938', // red if favorited
+          cursor: "pointer"
+        }
 
     return (
       <div className="jumbotron" id={ this.props.messageId } style={{ borderRadius: '40px', paddingLeft: '0', paddingRight: '0', paddingTop: '15px', paddingBottom: '7px', backgroundColor: '#ECF0F5'}} >
@@ -147,7 +157,7 @@ var Message = React.createClass({
 
           <div className="col-xs-12" style={{paddingLeft:'10px'}}>
             <div className="col-xs-1">
-              <span style={ {float: "left"} } onClick={ this.toggleFavorite }>
+              <span style={styleFavorites} onClick={ this.toggleFavorite }>
                 <i className="glyphicon glyphicon-heart"></i>
               </span>
             </div>

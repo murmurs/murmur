@@ -17,6 +17,8 @@ var getCookies = function(){
   return cookies;
 }
 
+window.sessionStorage.userId = "Dylan";
+
 var cookies = getCookies();
 var token = document.token = cookies.token;
 var auth = document.auth = cookies.auth;
