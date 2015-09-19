@@ -6,12 +6,11 @@ module.exports = React.createClass({
     showMap: function(position){
         localStorage.setItem('Latitude', position.coords.latitude);
         localStorage.setItem('longitude', position.coords.longitude);
-        console.log(localStorage);
         var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/'; 
 
         var mapOptions = {
                 center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                zoom: 8
+                zoom: 12
             },
             map = new google.maps.Map(this.getDOMNode(), mapOptions);
 
@@ -27,7 +26,7 @@ module.exports = React.createClass({
         });
 
         marker.addListener('click', function(){
-            map.setZoom(15);
+            map.setZoom(18);
             map.setCenter(marker.getPosition());
         });
         marker.addListener('mouseover', function(){
@@ -52,9 +51,7 @@ module.exports = React.createClass({
         }
     },
     render: function () {
-
         this.getLocation();
-
         return (
           <div className='map-gic'></div>
         );

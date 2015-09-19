@@ -26,7 +26,7 @@ var InputBox = React.createClass({
 
   render: function() {
     return (
-      <div className="input-group" style = {{padding: '15px', width: "100%"}}>
+      <div className="input-group" style = {{padding: '10px', width: "45%", position: 'relative'}}>
         <form onSubmit={this.handleSubmit} style={{}} className="clearfix">
           <input type="text" valueLink={this.linkState('message')} className="form-control" placeholder="What's on your mind?" style={{"width":"95%", "float":"left"}}/>
           <span className="input-group-btn" style={{"float":"left", "width":"5%"}}>
