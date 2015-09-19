@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var url = 'http://0.0.0.0:3000/';
 
+
 var InputBox = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
   getInitialState: function() {
@@ -8,6 +9,10 @@ var InputBox = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault(); //prevent the form from actually submitting.
+    if(!window.sessionStorage){
+      window.sessionStorage = {};
+      window.sessionStorage.username = 'test';
+    }
     $.ajax({
       type: 'POST',
       url: url + "message",

@@ -10,8 +10,6 @@
     "express": "^4.13.3",
     "express-jwt": "^3.1.0",
     "express-session": "^1.11.3",
-    "firebase": "^2.2.9",
-    "firebase-token-generator": "^2.0.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-react": "^3.0.1",
@@ -34,11 +32,11 @@
   "devDependencies": {
     "chai": "3.2.0",
     "express": "4.13.3",
-    "firebase": "2.2.9",
     "gulp-connect": "^2.2.0",
     "gulp-replace": "^0.5.4",
     "gulp-sftp": "^0.1.5",
     "gulp-shell": "^0.4.3",
+    "jest": "^0.1.40",
     "jest-cli": "^0.5.2",
     "mocha": "2.3.0",
     "mockfirebase": "^0.11.0",
@@ -46,8 +44,9 @@
     "scp2": "^0.2.2"
   },
   "scripts": {
-    "test": "jest",
-    "start": "sudo NODE_ENV=production nodejs server/server.js"
+    "test": "gulp test && jest",
+    "deploy": "sudo NODE_ENV=production nodejs server/server.js",
+    "start":"node server/server.js"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",

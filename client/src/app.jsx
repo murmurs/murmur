@@ -3,7 +3,6 @@ var ViewAllMessages = require('./viewAllMessages');
 var TopBar = require('./topbar');
 var InputBox = require('./inputbox');
 var LoginSignupModal = require('./loginSignupModal');
-var Firebase = require('firebase');
 var Map = require('./map');
 
 
