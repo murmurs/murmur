@@ -33,6 +33,8 @@ var messageSchema = new Schema({
   voters: [], //voters holds an array of userIds to record who has voted on this message.
   comments: [], //holds array of comments submitted on each message.
   favorites: [], //holds a list of userIds that have favorited this message.
+  latitude: String,
+  longitude: String,
   timestamp: {type: Date, default: Date.now}
 });
 
@@ -103,7 +105,9 @@ app.post('/message', function (request, response) {
     votes: 0,
     voters : [], //voters holds an array of userIds to record who has voted on this message.
     comments : [], //holds array of comments submitted on each message.
-    favorites : [] //holds a list of userIds that have favorited this message.
+    favorites : [], //holds a list of userIds that have favorited this message.
+    latitude: request.body.latitude,
+    longitude: request.body.longitude
   });
   newMessage.save(function (err, data){
     console.log(data._id)
