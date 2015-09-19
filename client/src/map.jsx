@@ -53,7 +53,7 @@ module.exports = React.createClass({
     render: function () {
         this.getLocation();
         return (
-          <div className='map-gic'></div>
+            <div className='map-gic'></div>
         );
     }
 });
