@@ -82,20 +82,26 @@ gulp.task('build', function() {
 });
 
 gulp.task('send', function(){
-  var paths = [
+  var clientPaths = [
     __dirname + '/client/main.js',
-    __dirname + '/client/index.html'
+    __dirname + '/client/index.html',
   ];
-  return gulp.src(paths)
-    .pipe(sftp({
-      host:'107.170.218.14',
-      user:'thefourloops',
-      pass:'whph',
-      remotePath: '/home/thefourloops/client'
-    }))
-    .on('error', function(error){
-      console.log(error);
-    });
+
+  function send(paths, remotePath){
+    return gulp.src(paths)
+      .pipe(sftp({
+        host:'107.170.218.14',
+        user:'thefourloops',
+        pass:'whph',
+        remotePath: remotePath
+      }))
+      .on('error', function(error){
+        console.log(error);
+      });
+  };
+  send('package.json', '/home/thefourloops');
+  send(clientPaths, '/home/thefourloops/client');
+  send(__dirname + '/server/server.js', '/home/thefourloops/server');
 });
 
 gulp.task('deploy', ['build', 'send']);

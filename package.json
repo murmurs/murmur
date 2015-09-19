@@ -47,7 +47,8 @@
     "scp2": "^0.2.2"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start":"sudo NODE_ENV=production nodejs server/server.js"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
