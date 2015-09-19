@@ -87,6 +87,16 @@ var mainView = React.createClass({
   toggleInputBox: function(){
     this.setState({ input: !this.state.input })
   },
+  styles: {
+    filter: {
+      paddingTop: '80px',
+      width: '100%',
+      textAlign: 'center'
+    },
+    inputBox: {
+      marginTop: '200px'
+    }
+  },
   render: function(){
     return (
       <div>
@@ -101,7 +111,7 @@ var mainView = React.createClass({
               <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleFavorites }>Favorites</button>
               <button className="btn btn-default" style={{fontFamily: 'Roboto'}} onClick={ this.handleMyPosts }>My Posts</button>
             </div>
-            <InputBox token={ this.state.token } auth={ this.state.auth }/>
+            <InputBox style={this.styles.style} token={ this.state.token } auth={ this.state.auth }/>
           </div>
           <ViewAllMessages sortBy={ this.state.sort } messages={ this.state.messages } sessions={ this.state.sessions }token={ this.state.token } auth={ this.state.auth }/>
         </div>
@@ -109,16 +119,6 @@ var mainView = React.createClass({
       </div>
     )
   },
-  styles: {
-    filter: {
-      paddingTop: '80px',
-      width: '100%',
-      textAlign: 'center'
-    },
-    inputBox: {
-      marginTop: '200px'
-    }
-  }
 })
 
 

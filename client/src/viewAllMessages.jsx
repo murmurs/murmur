@@ -55,7 +55,6 @@ var ViewAllMessages = React.createClass({
     return (
       <div style={ this.styles.messageRows }>
         { messageRowsSortedOptions[this.props.sortBy] }
-
       </div>
     )
   },
@@ -63,7 +62,10 @@ var ViewAllMessages = React.createClass({
   styles: {
     messageRows: {
       padding: '10px',
-    },
+      width: '50%',
+      height: '100px',
+      float: 'left'
+    }
   }
 });
 
