@@ -1,6 +1,7 @@
 var React = require('react');
 
 var message = "<p>Hi this is a message popUp</p>"
+var arr = [{messages: 'Hi', lat: 37.77493, lng: -122.41942}, {messages: 'Hello', lat: 37.423021, lng: -122.083739}];
 
 module.exports = React.createClass({
     showMap: function(position){
@@ -10,7 +11,7 @@ module.exports = React.createClass({
 
         var mapOptions = {
                 center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                zoom: 12
+                zoom: 5
             },
             map = new google.maps.Map(this.getDOMNode(), mapOptions);
 
@@ -24,7 +25,6 @@ module.exports = React.createClass({
         var infowindow = new google.maps.InfoWindow({
             content: message
         });
-
         marker.addListener('click', function(){
             map.setZoom(18);
             map.setCenter(marker.getPosition());
@@ -36,11 +36,26 @@ module.exports = React.createClass({
             infowindow.close(map, marker);
         });
 
-        var newMarker = new google.maps.Marker({
-            position: new google.maps.LatLng(37.77493, -122.41942), 
-            map: map, 
-            icon: new google.maps.MarkerImage("http://icons.iconarchive.com/icons/custom-icon-design/mono-general-1/512/chat-icon.png", null, null, null, new google.maps.Size(40, 40))
-        });
+        function addInfoWindow(marker, message) {
+            var infoWindow = new google.maps.InfoWindow({
+                content: message
+            });
+            marker.addListener('mouseover', function () {
+                infoWindow.open(map, marker);
+            });
+            marker.addListener('mouseout', function () {
+                infoWindow.close(map, marker);
+            });
+        }
+
+        for(var i = 0; i < arr.length; i++){
+            arr[i].marker = new google.maps.Marker({       
+                position: new google.maps.LatLng(arr[i].lat, arr[i].lng), 
+                map: map,
+                icon: new google.maps.MarkerImage("http://icons.iconarchive.com/icons/custom-icon-design/mono-general-1/512/chat-icon.png", null, null, null, new google.maps.Size(40, 40))     
+            }); 
+            addInfoWindow(arr[i].marker, arr[i].messages)
+        }
     },
     getLocation: function(){
         if(navigator.geolocation){
@@ -57,22 +72,3 @@ module.exports = React.createClass({
         );
     }
 });
-
-// function initMap() {
-//   var map = new google.maps.Map(document.getElementById('map'), {
-//     zoom: 4,
-//     center: {lat: -25.363882, lng: 131.044922 }
-//   });
-
-//   map.addListener('click', function(e) {
-//     placeMarkerAndPanTo(e.latLng, map);
-//   });
-// }
-
-// function placeMarkerAndPanTo(latLng, map) {
-//   var marker = new google.maps.Marker({
-//     position: latLng,
-//     map: map
-//   });
-//   map.panTo(latLng);
-// }
