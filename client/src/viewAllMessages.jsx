@@ -43,19 +43,15 @@ var ViewAllMessages = React.createClass({
   // },
   
   getMessages: function(){
-    console.log("in messages");
     $.ajax({
       type: 'GET',
       url: url + 'message',
       contentType: 'application/json',
       success: function(messages){
         var messages = JSON.parse(messages);
-        console.log(messages);
         var messageRows = [];
-        console.log("mrow1", messageRows);
         for(var i=0; i<messages.length; i++) {
           var message = messages[i];
-          console.log(messages[i]);
           //this is utilizing the message component and setting message properties for use in the message view.
           // baseId={ message.baseId}
           // hairId={ message.hairId}
@@ -67,7 +63,6 @@ var ViewAllMessages = React.createClass({
               comments={ message.comments } />
           );
         }
-        console.log(messageRows);
         // this.setState({messages: "easy"});
         this.setState({messages:messageRows});
       }.bind(this)
@@ -77,7 +72,6 @@ var ViewAllMessages = React.createClass({
 
   render: function() {
 
-    console.log("RENDERING");
     this.getMessages(); //fetch the messages from the db. They get set to messages state to be displayed.
 
     // Push messages from Firebase to messageRows

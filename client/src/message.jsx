@@ -79,7 +79,6 @@ var Message = React.createClass({
 
   render: function() {
     var commentRows = [];
-    console.log(this.props);
     if(this.props.comments.length !== 0){
       for(commentKey in this.props.comments){
         var comments = this.props.comments[commentKey];
