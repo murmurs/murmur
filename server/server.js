@@ -37,7 +37,7 @@ var messageSchema = new Schema({
 });
 
 
-app.use('/murmur', express.static('../client'));
+app.use('/murmur', express.static('./client'));
 app.use(bodyParser.json());
 
 //express session support
@@ -136,4 +136,5 @@ app.post('/favorite', function(request,response){
 });
 
 app.listen(port, serverUrl);
+console.log('server listening to:', serverUrl, ':', port);
 

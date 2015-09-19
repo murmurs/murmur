@@ -29,12 +29,10 @@ gulp.task('default', function() {
   };
   build();
   bundler.on('update', build);
-
-
-
+  
 });
 
-gulp.task('test_build', function(){
+gulp.task('test', function(){
 
   var b = browserify({
     entries:['./client/src/inputbox.jsx'],
@@ -52,9 +50,8 @@ gulp.task('test_build', function(){
     .pipe(source('./test_builds/inputbox.js'))
     .pipe(gulp.dest('./'))
   };
-  
-  build();
 
+  build();
 });
 
 gulp.task('build', function() {
