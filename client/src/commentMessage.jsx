@@ -1,6 +1,7 @@
 var React = require('react');
 var moment = require('moment');
-var Face = require('./face');
+
+var Face = require('/Users/jamesharlan/Documents/MKS/projects/murmur/client/src/face.jsx');
 
 var url = 'http://0.0.0.0:3000/';
 

@@ -32,28 +32,6 @@ gulp.task('default', function() {
   
 });
 
-gulp.task('test', function(){
-
-  var b = browserify({
-    entries:['./client/src/inputbox.jsx'],
-    transform: [reactify],
-    extensions: ['.jsx'],
-    debug: true,
-    cache: {},
-    packageCache: {},
-    fullPaths: true
-  });
-
-  function build(){
-    return b
-    .bundle()
-    .pipe(source('./test_builds/inputbox.js'))
-    .pipe(gulp.dest('./'))
-  };
-
-  build();
-});
-
 gulp.task('build', function() {
   var bundler = browserify({
     entries: ['./client/src/app.jsx'],
