@@ -1,5 +1,5 @@
 var Firebase = require('firebase');
-var myDataRef = new Firebase('https://fiery-heat-3376.firebaseio.com/');
+var myDataRef = new Firebase('https://resplendent-inferno-6476.firebaseio.com/');
 var tokenFactory = require('./firebaseTokenFactory').tokenFactory
 var Cookies = require('cookies');
 
@@ -20,7 +20,7 @@ var setTokenCookie = exports.setTokenCookie = function (request, response, token
   response.sendStatus(201);
 }
 
-var insertPost = exports.insertPost = function(request, response, dataRef){
+var insertPost = exports.insertPost = function(request, response, dataRef) {
   var dataRef = dataRef || freshPost;
   var token = request.cookies.get('token') || request.body.token; // body.token is for Slack
   var newToken;

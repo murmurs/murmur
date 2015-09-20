@@ -1,74 +1,46 @@
-var React = require('react');
+var React = require('react/addons');
 var url = 'http://0.0.0.0:3000/';
 
+
 var InputBox = React.createClass({
+  mixins: [React.addons.LinkedStateMixin],
   getInitialState: function() {
-    return {
-      message: ''
-    };
+    return {message: ''};
   },
-  // Update message value whenever user changes the message in the input box
-  handleChange: function(event){
-    if(event.target.value.length <= 150) { // Message cannot be longer than 150 characters
-      if (event.target.value.keyCode == 13) { // "Enter"
-        this.handleClick;
-      }
+  handleSubmit: function(event) {
+    event.preventDefault(); //prevent the form from actually submitting.
 
-      this.setState({
-        'message': event.target.value
-      });
-    }
-  },
-
-  enterPressed: function(event) {
-    if(event.keyCode === 13) {
-      event.preventDefault();
-      $.ajax({ // Post message
-        type: 'POST',
-        url: url,
-        contentType: 'application/json',
-        data: JSON.stringify({ "message": this.state.message }),
-        success: function(d){
-          console.log('POST successful: ', d);
-        }
-      });
-      this.setState({message: ''}); // Clear input box
-      console.log(this.state);
-    }
-  },
-
-  // Post a message when "Submit" button is clicked
-  handleClick: function(event){
-    event.preventDefault();
-    $.ajax({ // Post message
+    $.ajax({
       type: 'POST',
-      url: url,
+      url: url + "message",
       contentType: 'application/json',
-      // headers: {'Cookie' : document.cookie },
       data: JSON.stringify({
-        "uid": this.props.auth.uid,
+        //maybe the userId and username are set on the server side..
+        "userId": "SDFSDFSDFSDF34234", //this needs to be set by the session.
+        "username": window.sessionStorage.username, //this needs to be set by the session.
         "message": this.state.message,
-        "token": this.props.token
-      }
-      ),
+        "latitude": localStorage.latitude,
+        "longitude": localStorage.longitude
+      }),
       success: function(d){
         console.log('POST successful: ', d);
       }
     });
-    this.setState({message: ''}); // Clear input box
-    console.log(this.state);
   },
-  // two-way binding inputbox's value and this.state.message
+
   render: function() {
     return (
-      <div className="input-group" style = {{padding: '15px'}}>
-        <input value={this.state.message} onChange={this.handleChange} onKeyDown={this.enterPressed} type="text" className="form-control"  placeholder="What's on your mind?" />
-        <span className="input-group-btn">
-          <button onClick={this.handleClick} className="btn btn-success" type="button"> Submit </button>
-        </span>
+      <div className="input-group" style = {{padding: '10px', width: "45%", position: 'relative'}}>
+        <form onSubmit={this.handleSubmit} style={{}} className="clearfix">
+          <input type="text" valueLink={this.linkState('message')} className="form-control" placeholder="What's on your mind?" style={{"width":"95%", "float":"left"}}/>
+          <span className="input-group-btn" style={{"float":"left", "width":"5%"}}>
+            <input type="submit" className="btn btn-success"> Submit </input>
+          </span>
+        </form>
       </div>
     )
   }
 });
 
 module.exports = InputBox;
+
