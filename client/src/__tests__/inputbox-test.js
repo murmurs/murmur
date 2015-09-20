@@ -10,6 +10,16 @@ beforeEach(function(){
       this.ajaxProps = arguments[0];
     },
   };
+  localStorage = {
+    latitude: 5,
+    longitude: 5
+  };
+  if(!window){
+    window = {};
+  };
+  if(!window.sessionStorage){
+    window.sessionStorage = {};
+  };
 });
 
 describe('inputbox', function(){
