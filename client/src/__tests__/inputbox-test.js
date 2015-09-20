@@ -1,5 +1,5 @@
-jest.dontMock('../client/src/inputbox.jsx');
-var Inputbox = require('../client/src/inputbox.jsx');
+jest.dontMock('../inputbox.jsx');
+var Inputbox = require('../inputbox.jsx');
 var React = require('react/addons');
 
 var TestUtils = React.addons.TestUtils;
@@ -18,7 +18,7 @@ describe('inputbox', function(){
   	var inputbox = TestUtils.renderIntoDocument(
           <Inputbox />
   		);
-    expect(TestUtils.isCompositeComponent(inputbox)).toBeTruthy();
+    expect(TestUtils.isCompositeComponent(inputbox)).toEqual(true);
   });
   
   it('should make ajax post on enter keystroke', function(){

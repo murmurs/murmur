@@ -9,10 +9,7 @@ var InputBox = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault(); //prevent the form from actually submitting.
-    if(!window.sessionStorage){
-      window.sessionStorage = {};
-      window.sessionStorage.username = 'test';
-    }
+
     $.ajax({
       type: 'POST',
       url: url + "message",
@@ -22,7 +19,7 @@ var InputBox = React.createClass({
         "userId": "SDFSDFSDFSDF34234", //this needs to be set by the session.
         "username": window.sessionStorage.username, //this needs to be set by the session.
         "message": this.state.message,
-        "latitude": localStorage.Latitude,
+        "latitude": localStorage.latitude,
         "longitude": localStorage.longitude
       }),
       success: function(d){

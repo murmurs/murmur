@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "chai": "3.2.0",
-    "express": "4.13.3",
     "gulp-connect": "^2.2.0",
     "gulp-replace": "^0.5.4",
     "gulp-sftp": "^0.1.5",
@@ -44,7 +43,7 @@
     "scp2": "^0.2.2"
   },
   "scripts": {
-    "test": "gulp test && jest",
+    "test": "jest",
     "deploy": "sudo NODE_ENV=production nodejs server/server.js",
     "start":"node server/server.js"
   },
