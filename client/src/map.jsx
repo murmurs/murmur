@@ -5,7 +5,7 @@ var arr = [{messages: 'Hi', lat: 37.77493, lng: -122.41942}, {messages: 'Hello',
 
 module.exports = React.createClass({
     showMap: function(position){
-        localStorage.setItem('Latitude', position.coords.latitude);
+        localStorage.setItem('latitude', position.coords.latitude);
         localStorage.setItem('longitude', position.coords.longitude);
         var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/'; 
 
