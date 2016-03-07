@@ -4,7 +4,8 @@ var tokenFactory = require('./firebaseTokenFactory').tokenFactory;
 var app = express();
 var bodyParser = require('body-parser');
 var Cookies = require("cookies");
-var serverUrl = '107.170.240.99';
+// var serverUrl = '107.170.240.99';
+var serverUrl = 'murmur.lol';
 var fs = require('fs')
 
 app.use('/murmur', express.static('../client'));
@@ -14,31 +15,51 @@ app.use(bodyParser.json());
 app.use(Cookies.express())
 
 app.get('/noToken', function(request, response){
-  fs.readFile('../client/src/invite.html', function(err, data){
-    if(err){
-      console.log('error reading invite.html')
-    }
-    response.setHeader('Content-Type', 'text/html')
-    response.send(data)
-  })
+
+  if(request.cookies.get('token')){
+    console.log('already have a token')
+    request.method = 'get';
+//    response.redirect('/murmur');
+    response.redirect('/murmur');
+//    response.send({redirect: '/murmur'});
+  } else {                   // set Token Cookie
+
+    response.cookies.set('token', tokenFactory(), {
+      maxAge: 2628000000,   // expires in 1 month
+      httpOnly: false,    // more secure but then can't access from client 
+    })
+    request.method = 'get';
+    response.redirect('/murmur');
+//    response.send({redirect: '/murmur'});
+  }
+
+//  fs.readFile('../client/src/invite.html', function(err, data){
+//    if(err){
+//      console.log('error reading invite.html')
+//    }
+//    response.setHeader('Content-Type', 'text/html')
+//    response.send(data)
+//  })
 })
 
 app.post('/noToken', function(request, response){
   if(request.cookies.get('token')){
     console.log('already have a token')
     request.method = 'get';
-    // response.redirect('/murmur');
-    response.send({redirect: '/murmur'});
-  } else if(request.body.inviteCode === 'mks22'){                   // set Token Cookie
+    response.redirect('/murmur');
+ //   response.send({redirect: '/murmur'});
+  } else /*if(request.body.inviteCode === 'mkks22')*/{                   // set Token Cookie
+
     response.cookies.set('token', tokenFactory(), {
       maxAge: 2628000000,   // expires in 1 month
       httpOnly: false,    // more secure but then can't access from client
     })
     request.method = 'get';
-    response.send({redirect: '/murmur'});
-  } else {
+    response.redirect('/murmur'); 
+//   response.send({redirect: '/murmur'});
+  } /*else {
     response.send('Correct Invitation Code Required.')
-  }
+  }*/
 })
 
 app.get('/', function(request, response){
@@ -95,5 +116,5 @@ app.post('/favorite', function(request,response){ //request.body.url = 'newPost'
   firebase.toggleFavorite(request, response);
 })
 
-app.listen(4000, serverUrl);
+app.listen(80, serverUrl);
 

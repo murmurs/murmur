@@ -3,7 +3,7 @@ var moment = require('moment');
 var CommentBox = require('./commentBox');
 var CommentMessage = require('./commentMessage');
 
-var url = 'http://107.170.240.99:4000/';
+var url = 'http://murmur.lol/';
 
 var Message = React.createClass({
 
